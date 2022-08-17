@@ -1,0 +1,59 @@
+
+@font-face {
+  font-family: "VIC-Regular";
+  font-style: normal;
+  src: url("./fonts/VIC-Regular.eot");
+  src: url("./fonts/VIC-Regular-iefix.eot?#iefix") format("embedded-opentype"),
+       url("./fonts/VIC-Regular.woff2") format("woff2"),
+       url("./fonts/VIC-Regular.woff") format("woff"),
+       url("./fonts/VIC-Regular.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "VIC-SemiBold";
+  font-style: normal;
+  src: url("./fonts/VIC-SemiBold.eot");
+  src: url("./fonts/VIC-SemiBold-iefix.eot?#iefix") format("embedded-opentype"),
+       url("./fonts/VIC-SemiBold.woff2") format("woff2"),
+       url("./fonts/VIC-SemiBold.woff") format("woff"),
+       url("./fonts/VIC-Regular.ttf") format("truetype");
+}
+
+
+@font-face {
+  font-family: "VIC-Bold";
+  font-style: normal;
+  src: url("./fonts/VIC-Bold.eot");
+  src: url("./fonts/VIC-Bold-iefix.eot?#iefix") format("embedded-opentype"),
+       url("./fonts/VIC-Bold.woff2") format("woff2"),
+       url("./fonts/VIC-Bold.woff") format("woff"),
+       url("./fonts/VIC-Bold.ttf") format("truetype");
+}
+
+/*
+.navbar-default .navbar-nav>li{
+  background-color: #FFFFFF;
+  clip-path: polygon(88% 0, 100% 50%, 88% 100%, 0 100%, 8% 50%, 0% 0%);
+  padding-left: 3px;
+}
+
+.navbar-default .navbar-nav>li>a{
+  border-radius: 1.25rem;
+}
+*/
+
+.navbar.navbar-default ul.nav.navbar-nav>li>a{
+  padding:3px;
+}
+
+
+.navbar.navbar-default ul.nav.navbar-nav>li>a.active{
+  color:#FFFFFF;
+  border-bottom: 2px solid #BBBCBC;
+}
+
+.navbar-default .navbar-nav>li>a::before{
+  font-family:Sans-Serif;
+  content: "\203A\A0";
+  font-size: 1.2rem;
+}
