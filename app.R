@@ -4,6 +4,7 @@ library(shiny)
 library(bslib)
 library(shinyWidgets)
 library(shinyjs)
+# library(highcharter)
 
 
 # Get functions from R directory
@@ -33,6 +34,7 @@ ui <- navbarPage(
   # Page options
   id = "tabset",
   selected = "start",
+  collapsible = TRUE,
   lang = "en",
   theme = bs_theme_update(
     bs_theme(bootswatch = "flatly"),
@@ -105,8 +107,8 @@ server <- function(input, output, session) {
   disable(selector = '.navbar-nav a:not(.active, .completed)')
   hide(selector = '.advancedContent')
 
-  # TEST - eneable all tabs
-  # observeEvent(input$btn_next, {enable(selector = ".navbar-nav a")})
+  # DIAGNOSTIC TOOL - enable all tabs
+  observeEvent(input$diag_enable_tab, {enable(selector = ".navbar-nav a")})
 
   # Toggle advanced content
   observeEvent(input$switch_advanced, {
@@ -128,15 +130,24 @@ server <- function(input, output, session) {
     # Last tab handler
     req(input$tabset != tab_values[length(tab_values)])
 
+    # Clear invalid form classes
+    removeClass(selector = ".shiny-bound-input", class = "is-invalid")
+
     # Evaluate whether this page's requirements are met
     requirements_met <- switch(
       input$tabset,
-      financials = input$cur_rev != 0 & input$cur_rev != 0,
+      financials = input$cur_rev != 0 & input$cur_costs != 0,
       TRUE
       )
 
+    # DIAGNOSTIC FEATURE
+    # Only test requirements if enabled
+    requirements_met <- requirements_met | !input$diag_input_checks
+
     # Throw error if requirements not met
     if(!requirements_met){
+
+      # Error message
       sendSweetAlert(
         session = session,
         width = 400,
@@ -144,6 +155,18 @@ server <- function(input, output, session) {
         text = "Please ensure all inputs are filled",
         type = "error"
       )
+
+      # Incorrect form highlighting
+      badinputs <- switch(
+        input$tabset,
+        financials = c("cur_rev", "cur_costs")[
+          c(input$cur_rev == 0, input$cur_costs == 0)
+          ],
+        character(0)
+      )
+
+      lapply(badinputs, addClass, class = "is-invalid")
+
     }
 
     # Prevent tab switch without requirements met
