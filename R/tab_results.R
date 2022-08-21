@@ -1,5 +1,5 @@
 tab_results <- function(...) tabPanel(
-  title = 'results',
+  title = 'Results',
   value = 'results',
-  h1('results')
+  h1('Results')
 )

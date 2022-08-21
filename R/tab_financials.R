@@ -35,15 +35,32 @@ tab_financials <- function(...) tabPanel(
         )
       )
     )
-  ) %>%
-    tagAppendAttributes(class = "justify-content-start"),
-  numericInput(
-    inputId = "cur_costs",
-    label = "Current annual costs ($)",
-    min = 0,
-    max = 1e11, # One hundred billion dollars,
-    value = 0
+  ),
+  fluidRow(
+    column(
+      3,
+      style = "width: 300px;",
+      numericInput(
+        inputId = "cur_costs",
+        label = "Current annual costs ($)",
+        min = 0,
+        max = 1e11, # One hundred billion dollars,
+        value = 0
+      )
+    ),
+    div(
+      class = "col",
+      advanced_content(
+        radioGroupButtons(
+          inputId = "cur_costs_uncertainty",
+          label = "Certainty",
+          choices = c("High", "Medium", "Low"),
+          status = "primary"
+        )
+      )
+    )
   )
+
 
 )
 
