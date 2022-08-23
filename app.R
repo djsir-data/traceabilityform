@@ -133,7 +133,7 @@ server <- function(input, output, session) {
       show(selector = '.basicContent', anim = TRUE, time = 0.4)
       hide(selector = '.advancedContent', anim = TRUE, time = 0.4)
     } else {
-      waring("switch_advanced input invalid")
+      warning("switch_advanced input invalid")
     }
 
   })
@@ -146,7 +146,7 @@ server <- function(input, output, session) {
     } else if(input$switch_advanced == FALSE){
       hide(selector = '.uncertaintyContent', anim = TRUE, time = 0.4)
     } else {
-      waring("switch_advanced input invalid")
+      warning("switch_advanced input invalid")
     }
 
   })
