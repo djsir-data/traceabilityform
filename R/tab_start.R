@@ -56,36 +56,4 @@ tab_start <- function(...) tabPanel(
     # Start hidden
     tagAppendAttributes(style = "display: none;"),
 
-  # # Diagnostic tool
-  # br(),
-  # div(
-  #   class = "card text-white bg-primary mb-3",
-  #   style = "max-width: 20rem;",
-  #   div(class = "card-header", "Diagnostic tools"),
-  #   div(
-  #     class = "card-body",
-  #     p(
-  #       class = "card-text",
-  #       "These features are only intended for development puroses and will not be available on release."
-  #     ),
-  #     tags$label("Enable all steps"),
-  #     br(),
-  #     actionButton(
-  #       "diag_enable_tab",
-  #       label = "Enable"
-  #     ),
-  #     br(),
-  #     tags$label("Input validation"),
-  #     switchInput(
-  #       "diag_input_checks", value = T
-  #     ),
-  #     tags$label("Test bad input alert"),
-  #     br(),
-  #     actionButton(
-  #       "diag_alert",
-  #       label = "Alert"
-  #     )
-  #   )
-  # )
-
 )

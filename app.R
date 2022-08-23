@@ -111,17 +111,6 @@ server <- function(input, output, session) {
   hide(selector = '.advancedContent')
   hide(selector = '.uncertaintyContent')
 
-  # # DIAGNOSTIC TOOL - enable all tabs
-  # observeEvent(input$diag_enable_tab, {enable(selector = ".navbar-nav a")})
-  #
-  # # DIAGNOSTIC TOOL - test alert
-  # observeEvent(input$diag_alert, {sendSweetAlert(
-  #   session = session,
-  #   width = 400,
-  #   title = "Missing values",
-  #   text = "Please ensure all inputs are filled",
-  #   type = "error"
-  # )})
 
   # Toggle advanced content
   observeEvent(input$switch_advanced, {
@@ -166,10 +155,6 @@ server <- function(input, output, session) {
       financials = isTruthy(input$cur_rev) & isTruthy(input$cur_costs),
       TRUE
       )
-
-    # DIAGNOSTIC FEATURE
-    # Only test requirements if enabled
-    # requirements_met <- requirements_met | !input$diag_input_checks
 
     # Throw error if requirements not met
     if(!requirements_met){
