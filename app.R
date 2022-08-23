@@ -51,28 +51,31 @@ ui <- navbarPage(
     # Head items (stylesheets and scripts)
     tags$head(
       useShinyjs(),
-      tags$link(rel = "stylesheet", type = "text/css", href = "agvic.css")
+      tags$link(rel = "stylesheet", type = "text/css", href = "agvic.css"),
+      tags$script("$(document).ready(function(){$(\".nav-link:not(.active)\").addClass(\"disabled\")});")
     ),
     # Advanced switch
     column(
       12,
-      tagAppendAttributes(
-        tagAppendAttributes(
-          materialSwitch(
-            "switch_advanced",
-            label = "Additonal detail"
-          ),
-          style = "float: right;"
-        ),
+      div(
         style = "float: right;",
-        .cssSelector = ".material-switch"
+        materialSwitch(
+          "switch_advanced",
+          label = "Additonal detail",
+          inline = TRUE
+        ),
+        materialSwitch(
+          "switch_uncertainty",
+          label = "Uncertainty",
+          inline = TRUE
+        )
       )
     )
   ),
   # Previous and next button footer
   footer = column(
     12,
-    style = "padding-top:50px;",
+    style = "padding-top:50px;padding-bottom:50px;",
     actionButton(
       "btn_prev",
       span(icon("arrow-left"), " Previous")
@@ -106,9 +109,19 @@ server <- function(input, output, session) {
   # Disable Steps not yet completed & advanced content by default
   disable(selector = '.navbar-nav a:not(.active, .completed)')
   hide(selector = '.advancedContent')
+  hide(selector = '.uncertaintyContent')
 
-  # DIAGNOSTIC TOOL - enable all tabs
-  observeEvent(input$diag_enable_tab, {enable(selector = ".navbar-nav a")})
+  # # DIAGNOSTIC TOOL - enable all tabs
+  # observeEvent(input$diag_enable_tab, {enable(selector = ".navbar-nav a")})
+  #
+  # # DIAGNOSTIC TOOL - test alert
+  # observeEvent(input$diag_alert, {sendSweetAlert(
+  #   session = session,
+  #   width = 400,
+  #   title = "Missing values",
+  #   text = "Please ensure all inputs are filled",
+  #   type = "error"
+  # )})
 
   # Toggle advanced content
   observeEvent(input$switch_advanced, {
@@ -125,8 +138,22 @@ server <- function(input, output, session) {
 
   })
 
+  # Toggle uncertainty content
+  observeEvent(input$switch_uncertainty, {
+
+    if(input$switch_uncertainty == TRUE){
+      show(selector = '.uncertaintyContent', anim = TRUE, time = 0.4)
+    } else if(input$switch_advanced == FALSE){
+      hide(selector = '.uncertaintyContent', anim = TRUE, time = 0.4)
+    } else {
+      waring("switch_advanced input invalid")
+    }
+
+  })
+
   # Forward and backwards navigation
   observeEvent(input$btn_next, {
+
     # Last tab handler
     req(input$tabset != tab_values[length(tab_values)])
 
@@ -136,31 +163,22 @@ server <- function(input, output, session) {
     # Evaluate whether this page's requirements are met
     requirements_met <- switch(
       input$tabset,
-      financials = input$cur_rev != 0 & input$cur_costs != 0,
+      financials = isTruthy(input$cur_rev) & isTruthy(input$cur_costs),
       TRUE
       )
 
     # DIAGNOSTIC FEATURE
     # Only test requirements if enabled
-    requirements_met <- requirements_met | !input$diag_input_checks
+    # requirements_met <- requirements_met | !input$diag_input_checks
 
     # Throw error if requirements not met
     if(!requirements_met){
-
-      # Error message
-      sendSweetAlert(
-        session = session,
-        width = 400,
-        title = "Missing values",
-        text = "Please ensure all inputs are filled",
-        type = "error"
-      )
 
       # Incorrect form highlighting
       badinputs <- switch(
         input$tabset,
         financials = c("cur_rev", "cur_costs")[
-          c(input$cur_rev == 0, input$cur_costs == 0)
+          !c(isTruthy(input$cur_rev), isTruthy(input$cur_costs))
           ],
         character(0)
       )

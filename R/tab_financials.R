@@ -15,12 +15,11 @@ tab_financials <- function(...) tabPanel(
     div(
       class = "col-sm-3",
       style = "width: 300px;",
-      numericInput(
+      dollarInput(
         inputId = "cur_rev",
-        label = "Current annual revenue ($)",
+        label = "Current annual revenue",
         min = 0,
         max = 1e11, # One hundred billion dollars,
-        value = 0,
         width = "300px"
       )
     ),
@@ -29,7 +28,7 @@ tab_financials <- function(...) tabPanel(
       advanced_content(
         radioGroupButtons(
           inputId = "cur_rev_uncertainty",
-          label = "Certainty",
+          label = "Annual revenue certainty",
           choices = c("High", "Medium", "Low"),
           status = "primary"
         )
@@ -40,12 +39,11 @@ tab_financials <- function(...) tabPanel(
     column(
       3,
       style = "width: 300px;",
-      numericInput(
+      dollarInput(
         inputId = "cur_costs",
-        label = "Current annual costs ($)",
+        label = "Current annual costs",
         min = 0,
-        max = 1e11, # One hundred billion dollars,
-        value = 0
+        max = 1e11 # One hundred billion dollars,
       )
     ),
     div(
@@ -53,7 +51,7 @@ tab_financials <- function(...) tabPanel(
       advanced_content(
         radioGroupButtons(
           inputId = "cur_costs_uncertainty",
-          label = "Certainty",
+          label = "Annual costs certainty",
           choices = c("High", "Medium", "Low"),
           status = "primary"
         )
