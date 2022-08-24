@@ -24,7 +24,10 @@ tab_start <- function(...) tabPanel(
   # Advanced content
   advanced_content(
     border = TRUE,
-    p("this content is hidden by the top switch:"),
+    p(
+      class="text-danger",
+      "DEV NOTE: This content is hidden by the top switch. Discount rate defaults to 10 year Treasury bond yield."
+      ),
 
     # Discount rate with info
     percentInput(
@@ -38,7 +41,7 @@ tab_start <- function(...) tabPanel(
           target = "blank"
           )
         ),
-      value = "7",
+      value = readRDS("app-cache/gov_bond.rds"),
       min = 0,
       max = 100
     ),
@@ -46,7 +49,7 @@ tab_start <- function(...) tabPanel(
     # Evaluation period
     suffixNumericInput(
       inputId = "eval_period",
-      label = "Evaluation period in years",
+      label = "Evaluation period",
       value = "10",
       min = 1,
       max = 50,

@@ -25,7 +25,7 @@ tab_financials <- function(...) tabPanel(
     ),
     div(
       class = "col",
-      advanced_content(
+      uncertainty_content(
         radioGroupButtons(
           inputId = "cur_rev_uncertainty",
           label = "Annual revenue certainty",
@@ -48,7 +48,7 @@ tab_financials <- function(...) tabPanel(
     ),
     div(
       class = "col",
-      advanced_content(
+      uncertainty_content(
         radioGroupButtons(
           inputId = "cur_costs_uncertainty",
           label = "Annual costs certainty",

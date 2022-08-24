@@ -93,6 +93,10 @@ ui <- navbarPage(
 # Define server logic required to draw a histogram
 server <- function(input, output, session) {
 
+  # Disable Steps not yet completed & advanced content by default
+  hide(selector = '.advancedContent')
+  hide(selector = '.uncertaintyContent')
+
   # Tab order
   tab_values <- c(
     "start",
@@ -106,10 +110,23 @@ server <- function(input, output, session) {
     "results"
   )
 
-  # Disable Steps not yet completed & advanced content by default
-  disable(selector = '.navbar-nav a:not(.active, .completed)')
-  hide(selector = '.advancedContent')
-  hide(selector = '.uncertaintyContent')
+  # Tab tracker
+  tab_tracker <- reactiveValues(last_tab = "", current_tab = "start")
+
+  # Tab switch validation
+  observeEvent(input$tabset, {
+    # Update tab tracker
+    tab_tracker$last_tab <- tab_tracker$current_tab
+    tab_tracker$current_tab <- input$tabset
+
+    # Check last tab was valid
+    requirements_met <- validate_inputs(input, tab = tab_tracker$last_tab)
+
+    # If requirements not met, go back
+    if(!requirements_met){
+      updateNavbarPage(inputId = "tabset", selected = tab_tracker$last_tab)
+    }
+  })
 
 
   # Toggle advanced content
@@ -132,7 +149,7 @@ server <- function(input, output, session) {
 
     if(input$switch_uncertainty == TRUE){
       show(selector = '.uncertaintyContent', anim = TRUE, time = 0.4)
-    } else if(input$switch_advanced == FALSE){
+    } else if(input$switch_uncertainty == FALSE){
       hide(selector = '.uncertaintyContent', anim = TRUE, time = 0.4)
     } else {
       warning("switch_advanced input invalid")
@@ -149,36 +166,17 @@ server <- function(input, output, session) {
     # Clear invalid form classes
     removeClass(selector = ".shiny-bound-input", class = "is-invalid")
 
-    # Evaluate whether this page's requirements are met
-    requirements_met <- switch(
-      input$tabset,
-      financials = isTruthy(input$cur_rev) & isTruthy(input$cur_costs),
-      TRUE
-      )
+    # Check requirements are met
+    requirements_met <- validate_inputs(input)
 
-    # Throw error if requirements not met
-    if(!requirements_met){
-
-      # Incorrect form highlighting
-      badinputs <- switch(
-        input$tabset,
-        financials = c("cur_rev", "cur_costs")[
-          !c(isTruthy(input$cur_rev), isTruthy(input$cur_costs))
-          ],
-        character(0)
-      )
-
-      lapply(badinputs, addClass, class = "is-invalid")
-
-    }
-
-    # Prevent tab switch without requirements met
+    # Stop page change if requirements aren't met
     req(requirements_met)
 
     # Tab increment
     target_tab <- tab_values[match(input$tabset, tab_values) + 1]
     enable(selector = paste0(".nav-item a[data-value=", target_tab, "]"))
     updateNavbarPage(inputId = "tabset", selected = target_tab)
+
   })
 
   observeEvent(input$btn_prev, {
