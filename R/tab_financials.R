@@ -3,7 +3,7 @@ tab_financials <- function(...) tabPanel(
   value = 'financials',
 
   # Title
-  h1('Current financial position'),
+  h2('Current financial position'),
 
   # Some text
   p(
@@ -41,7 +41,6 @@ tab_financials <- function(...) tabPanel(
       )
     )
   ),
-  tags$hr(),
   fluidRow(
     div(
       class = "col-lg-3",

@@ -14,7 +14,7 @@ tab_start <- function(...) tabPanel(
   ),
 
   # Title
-  h1('Start'),
+  h2('Start'),
 
   # Some text
   p(
@@ -22,8 +22,8 @@ tab_start <- function(...) tabPanel(
   ),
 
   # Advanced content
-  advanced_content(
-    border = TRUE,
+  div(
+    class = c("advancedContent", "bordered"),
     p(
       class="text-danger",
       "DEV NOTE: This content is hidden by the top switch. Discount rate defaults to 10 year Treasury bond yield."
