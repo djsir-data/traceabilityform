@@ -13,7 +13,9 @@ input_list <- list(
     always = c("discount_rate", "eval_period"),
     basic = c(),
     advanced = c(),
-    uncertainty = c()
+    uncertainty = c(),
+    basic_uncertainty = c(),
+    advanced_uncertainty = c()
     ),
   financials = list(
     always = c("cur_rev", "cur_costs"),
@@ -24,49 +26,65 @@ input_list <- list(
       "cur_rev_uncertainty",
       "cur_costs_range",
       "cur_costs_uncertainty"
-      )
+      ),
+    basic_uncertainty = c(),
+    advanced_uncertainty = c()
   ),
   add_revenue = list(
     always = c(),
     basic = c(),
     advanced = c(),
-    uncertainty = c()
+    uncertainty = c(),
+    basic_uncertainty = c(),
+    advanced_uncertainty = c()
   ),
   red_costs = list(
     always = c(),
     basic = c(),
     advanced = c(),
-    uncertainty = c()
+    uncertainty = c(),
+    basic_uncertainty = c(),
+    advanced_uncertainty = c()
   ),
   red_crisis = list(
     always = c(),
     basic = c(),
     advanced = c(),
-    uncertainty = c()
+    uncertainty = c(),
+    basic_uncertainty = c(),
+    advanced_uncertainty = c()
   ),
   sol_provider = list(
     always = c(),
     basic = c(),
     advanced = c(),
-    uncertainty = c()
+    uncertainty = c(),
+    basic_uncertainty = c(),
+    advanced_uncertainty = c()
   ),
   bus_costs = list(
     always = c(),
     basic = c(),
     advanced = c(),
-    uncertainty = c()
+    uncertainty = c(),
+    basic_uncertainty = c(),
+    advanced_uncertainty = c()
   ),
   sup_chain = list(
     always = c(),
     basic = c(),
     advanced = c(),
-    uncertainty = c()
+    uncertainty = c(),
+    basic_uncertainty = c(),
+    advanced_uncertainty = c()
   ),
   results = list(
     always = c(),
     basic = c(),
     advanced = c(),
-    uncertainty = c()
+    uncertainty = c(),
+    basic_uncertainty = c(),
+    advanced_uncertainty = c()
   )
 )
 
