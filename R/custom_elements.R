@@ -197,7 +197,6 @@ dollarRangeInput <- function(
     span(class="input-group-text", "$"),
     input$children[[2]]$children[[1]],
     input$children[[2]]$children[[2]],
-    # span(class="input-group-text", "$"),
     input$children[[2]]$children[[3]],
     if(suffix00) {span(class="input-group-text", ".00")} else {NULL}
   )
@@ -205,4 +204,43 @@ dollarRangeInput <- function(
   return(input)
 }
 
+# Percent range input
+percentRangeInput <- function(
+    inputId,
+    label,
+    value = NULL,
+    width = NULL,
+    separator = "% to ",
+    min = NA,
+    max = NA,
+    step = NA
+){
+
+  input <- numericRangeInput(
+    inputId = inputId,
+    label  = label,
+    value = if(is.null(value)) {0} else {value},
+    separator = separator,
+    min = min,
+    max = max,
+    step = step,
+    width = width
+  )
+
+  # Remove mandatory default value
+  if(is.null(value)){
+    input$children[[2]]$children[[1]]$attribs$value <- NULL
+    input$children[[2]]$children[[3]]$attribs$value <- NULL
+  }
+
+  # Add prefix and suffix
+  input$children[[2]]$children <- list(
+    input$children[[2]]$children[[1]],
+    input$children[[2]]$children[[2]],
+    input$children[[2]]$children[[3]],
+    span(class="input-group-text", "%")
+  )
+
+  return(input)
+}
 
