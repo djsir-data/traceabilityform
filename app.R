@@ -128,7 +128,6 @@ server <- function(input, output, session) {
     }
   })
 
-
   # Toggle advanced content
   observeEvent(input$switch_advanced, {
 
@@ -164,7 +163,7 @@ server <- function(input, output, session) {
     req(input$tabset != tab_values[length(tab_values)])
 
     # Clear invalid form classes
-    removeClass(selector = ".shiny-bound-input", class = "is-invalid")
+    removeClass(selector = "input", class = "is-invalid")
 
     # Check requirements are met
     requirements_met <- validate_inputs(input)

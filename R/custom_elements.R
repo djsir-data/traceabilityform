@@ -1,3 +1,15 @@
+
+basic_content <- function(..., border = FALSE){
+  div(
+    class = if(border == FALSE){
+      "basicContent"
+    } else {
+      c("basicContent", "bordered")
+    },
+    ...
+  )
+}
+
 advanced_content <- function(..., border = FALSE){
   div(
     class = if(border == FALSE){
@@ -20,16 +32,28 @@ uncertainty_content <- function(..., border = FALSE){
   )
 }
 
-basic_content <- function(..., border = FALSE){
+basic_uncertainty_content <- function(..., border = FALSE){
   div(
     class = if(border == FALSE){
-      "basicContent"
+      "basicUncertaintyContent"
     } else {
-      c("basicContent", "bordered")
+      c("basicUncertaintyContent", "bordered")
     },
     ...
   )
 }
+
+advanced_uncertainty_content <- function(..., border = FALSE){
+  div(
+    class = if(border == FALSE){
+      "advancedUncertaintyContent"
+    } else {
+      c("advancedUncertaintyContent", "bordered")
+    },
+    ...
+  )
+}
+
 
 # Input with dollar prefix
 dollarInput <- function(

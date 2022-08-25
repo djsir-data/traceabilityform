@@ -13,48 +13,62 @@ tab_financials <- function(...) tabPanel(
   # Inputs
   fluidRow(
     div(
-      class = "col-sm-3",
-      style = "width: 300px;",
+      class = "col-lg-3",
       dollarInput(
         inputId = "cur_rev",
         label = "Current annual revenue",
         min = 0,
         max = 1e11, # One hundred billion dollars,
-        width = "300px"
+        width = "100%"
       )
     ),
     div(
-      class = "col",
-      uncertainty_content(
-        radioGroupButtons(
-          inputId = "cur_rev_uncertainty",
-          label = "Annual revenue certainty",
-          choices = c("High", "Medium", "Low"),
-          status = "primary"
-        )
+      class = c("col-lg-3", "uncertaintyContent"),
+      dollarRangeInput(
+        inputId = "cur_rev_range",
+        label = "Annual revenue range",
+        width = "100%"
+      )
+    ),
+    div(
+      class = c("col-lg-3", "uncertaintyContent"),
+      radioGroupButtons(
+        inputId = "cur_rev_uncertainty",
+        label = "Annual revenue certainty",
+        choices = c("High", "Medium", "Low"),
+        status = "primary",
+        justified  = TRUE
       )
     )
   ),
+  tags$hr(),
   fluidRow(
-    column(
-      3,
-      style = "width: 300px;",
+    div(
+      class = "col-lg-3",
       dollarInput(
         inputId = "cur_costs",
         label = "Current annual costs",
         min = 0,
-        max = 1e11 # One hundred billion dollars,
+        max = 1e11, # One hundred billion dollars,
+        width = "100%"
       )
     ),
     div(
-      class = "col",
-      uncertainty_content(
-        radioGroupButtons(
-          inputId = "cur_costs_uncertainty",
-          label = "Annual costs certainty",
-          choices = c("High", "Medium", "Low"),
-          status = "primary"
-        )
+      class = c("col-lg-3", "uncertaintyContent"),
+      dollarRangeInput(
+        inputId = "cur_costs_range",
+        label = "Annual cost range",
+        width = "100%"
+      )
+    ),
+    div(
+      class = c("col-lg-3", "uncertaintyContent"),
+      radioGroupButtons(
+        inputId = "cur_costs_uncertainty",
+        label = "Annual costs certainty",
+        choices = c("High", "Medium", "Low"),
+        status = "primary",
+        justified = TRUE
       )
     )
   )
