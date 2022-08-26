@@ -5,7 +5,9 @@ input_row <- function(
     label,
     input_type = "percent",
     content_type = "always",
-    uncertainty_label = NULL
+    uncertainty_label = NULL,
+    grid_size = "lg",
+    col_width = 3
 ){
 
   # Determine row classes to apply
@@ -22,7 +24,12 @@ input_row <- function(
     input_type,
     percent = percentInput,
     dollar  = dollarInput,
-    stop("input_type must be one of percent, dollar")
+    number = novalNumericInput,
+    claims  = function(inputId, label, width) suffixNumericInput(inputId, label, "Claims", width = width),
+    recalls  = function(inputId, label, width) suffixNumericInput(inputId, label, "Recalls", width = width),
+    outbreaks  = function(inputId, label, width) suffixNumericInput(inputId, label, "Outbreaks", width = width),
+    disasters  = function(inputId, label, width) suffixNumericInput(inputId, label, "Distasters", width = width),
+    stop("input_type not recognised")
   )
 
   # Determine input range function to use (for uncertainty)
@@ -30,8 +37,16 @@ input_row <- function(
     input_type,
     percent = percentRangeInput,
     dollar  = dollarRangeInput,
+    number = novalRangeInput,
+    claims  = function(inputId, label, width) suffixRangeInput(inputId, label, "Claims", width = width),
+    recalls  = function(inputId, label, width) suffixRangeInput(inputId, label, "Recalls", width = width),
+    outbreaks  = function(inputId, label, width) suffixRangeInput(inputId, label, "Outbreaks", width = width),
+    disasters  = function(inputId, label, width) suffixRangeInput(inputId, label, "Distasters", width = width),
     stop("input_type must be one of percent, dollar")
   )
+
+  # determine column class
+  col_class <- paste0("col-", grid_size, "-", col_width)
 
   # Determine labels for uncertainty content (if different to main input)
   if(!is.null(uncertainty_label)){
@@ -47,7 +62,7 @@ input_row <- function(
     class = row_classes,
     # Main input
     div(
-      class = "col-lg-3",
+      class = col_class,
       input_fun(
         inputId = inputId,
         label = label,
@@ -56,7 +71,7 @@ input_row <- function(
     ),
     # Uncertainty content
     div(
-      class = c("col-lg-3", "uncertaintyContent"),
+      class = c(col_class, "uncertaintyContent"),
       input_range_fun(
         inputId = paste0(inputId, "_range"),
         label = label_range,
@@ -64,7 +79,7 @@ input_row <- function(
       )
     ),
     div(
-      class = c("col-lg-3", "uncertaintyContent"),
+      class = c(col_class, "uncertaintyContent"),
       radioGroupButtons(
         inputId = paste0(inputId, "_uncertainty"),
         label = label_uncertainty,
@@ -91,6 +106,33 @@ input_row_set <- function(
     content_type = content_type,
     SIMPLIFY = FALSE
   )
+}
+
+
+# Numeric input with no default
+novalNumericInput <- function(
+    inputId,
+    label,
+    value = NULL,
+    min = NA,
+    max = NA,
+    step = NA,
+    width = NULL
+){
+  input <- numericInput(
+    inputId = inputId,
+    label  = label,
+    value = if(is.null(value)) {0} else {value},
+    min = min,
+    max = max,
+    step = step,
+    width = width
+  )
+
+  # Remove mandatory default value
+  if(is.null(value)){input$children[[2]]$attribs$value <- NULL}
+
+  return(input)
 }
 
 
@@ -284,3 +326,78 @@ percentRangeInput <- function(
   return(input)
 }
 
+# Custom suffix range input
+suffixRangeInput <- function(
+    inputId,
+    label,
+    suffix,
+    value = NULL,
+    width = NULL,
+    separator = " to ",
+    min = NA,
+    max = NA,
+    step = NA
+){
+
+  separator <- paste0(suffix, separator)
+
+  input <- numericRangeInput(
+    inputId = inputId,
+    label  = label,
+    value = if(is.null(value)) {0} else {value},
+    separator = separator,
+    min = min,
+    max = max,
+    step = step,
+    width = width
+  )
+
+  # Remove mandatory default value
+  if(is.null(value)){
+    input$children[[2]]$children[[1]]$attribs$value <- NULL
+    input$children[[2]]$children[[3]]$attribs$value <- NULL
+  }
+
+  # Add prefix and suffix
+  input$children[[2]]$children <- list(
+    input$children[[2]]$children[[1]],
+    input$children[[2]]$children[[2]],
+    input$children[[2]]$children[[3]],
+    span(class="input-group-text", suffix)
+  )
+
+  return(input)
+}
+
+# Range input with no default
+novalRangeInput <- function(
+    inputId,
+    label,
+    value = NULL,
+    width = NULL,
+    separator = " to ",
+    min = NA,
+    max = NA,
+    step = NA
+){
+
+  input <- numericRangeInput(
+    inputId = inputId,
+    label  = label,
+    value = if(is.null(value)) {0} else {value},
+    separator = separator,
+    min = min,
+    max = max,
+    step = step,
+    width = width
+  )
+
+  # Remove mandatory default value
+  if(is.null(value)){
+    input$children[[2]]$children[[1]]$attribs$value <- NULL
+    input$children[[2]]$children[[3]]$attribs$value <- NULL
+  }
+
+
+  return(input)
+}

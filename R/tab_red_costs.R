@@ -21,7 +21,7 @@ tab_red_costs <- function(...) tabPanel(
       'brand_prot',
       'data',
       'inventory',
-      'marketing',
+      'marketing_savings',
       'packaging',
       'quality',
       'rejections',

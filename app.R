@@ -52,7 +52,7 @@ ui <- navbarPage(
     tags$head(
       useShinyjs(),
       tags$link(rel = "stylesheet", type = "text/css", href = "agvic.css"),
-      tags$script("$(document).ready(function(){$(\".nav-link:not(.active)\").addClass(\"disabled\")});")
+      # tags$script("$(document).ready(function(){$(\".nav-link:not(.active)\").addClass(\"disabled\")});")
     ),
     # Advanced switch
     column(
