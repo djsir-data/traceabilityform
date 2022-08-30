@@ -85,3 +85,7 @@
 .material-switch>label:after, .material-switch>label:before{
   margin-top: -13px;
 }
+
+.pretty .state label:before, .pretty .state label:after{
+  top: calc((0% - (100% - 1em)) - 9%);
+}
