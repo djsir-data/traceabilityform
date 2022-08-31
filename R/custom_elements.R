@@ -73,7 +73,7 @@ input_row <- function(
     div(
       class = c(col_class, "uncertaintyContent"),
       input_range_fun(
-        inputId = paste0(inputId, "_range"),
+        inputId = paste0(inputId, "-range"),
         label = label_range,
         width = "100%"
       )
@@ -81,7 +81,7 @@ input_row <- function(
     div(
       class = c(col_class, "uncertaintyContent"),
       radioGroupButtons(
-        inputId = paste0(inputId, "_uncertainty"),
+        inputId = paste0(inputId, "-uncertainty"),
         label = label_uncertainty,
         choices = c("High", "Medium", "Low"),
         status = "primary",

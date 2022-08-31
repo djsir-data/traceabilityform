@@ -25,7 +25,7 @@ tab_financials <- function(...) tabPanel(
     div(
       class = c("col-lg-3", "uncertaintyContent"),
       dollarRangeInput(
-        inputId = "cur_rev_range",
+        inputId = "cur_rev-range",
         label = "Annual revenue range",
         width = "100%"
       )
@@ -33,7 +33,7 @@ tab_financials <- function(...) tabPanel(
     div(
       class = c("col-lg-3", "uncertaintyContent"),
       radioGroupButtons(
-        inputId = "cur_rev_uncertainty",
+        inputId = "cur_rev-uncertainty",
         label = "Annual revenue certainty",
         choices = c("High", "Medium", "Low"),
         status = "primary",
@@ -55,7 +55,7 @@ tab_financials <- function(...) tabPanel(
     div(
       class = c("col-lg-3", "uncertaintyContent"),
       dollarRangeInput(
-        inputId = "cur_costs_range",
+        inputId = "cur_costs-range",
         label = "Annual cost range",
         width = "100%"
       )
@@ -63,7 +63,7 @@ tab_financials <- function(...) tabPanel(
     div(
       class = c("col-lg-3", "uncertaintyContent"),
       radioGroupButtons(
-        inputId = "cur_costs_uncertainty",
+        inputId = "cur_costs-uncertainty",
         label = "Annual costs certainty",
         choices = c("High", "Medium", "Low"),
         status = "primary",
