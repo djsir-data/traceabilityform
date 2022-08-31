@@ -24,6 +24,7 @@ tab_start <- function(...) tabPanel(
   # Advanced content
   div(
     class = c("advancedContent", "bordered"),
+    style = "display: none;",
     p(
       class="text-danger",
       "DEV NOTE: This content is hidden by the top switch. Discount rate defaults to 10 year Treasury bond yield."
@@ -55,8 +56,6 @@ tab_start <- function(...) tabPanel(
       max = 50,
       suffix = "years"
     )
-  ) %>%
-    # Start hidden
-    tagAppendAttributes(style = "display: none;"),
+  )
 
 )

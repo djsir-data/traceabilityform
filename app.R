@@ -1,5 +1,5 @@
 # Packages
-library(magrittr)
+library(data.table)
 library(shiny)
 library(bslib)
 library(shinyWidgets)
@@ -57,8 +57,6 @@ ui <- navbarPage(
       12,
       div(
         style = "float: right;",
-        # shinyWidgets::currencyInput("test", "test", 100),
-        # shinyWidgets::switchInput("test2", "test2"),
         materialSwitch(
           "switch_advanced",
           label = "Additonal detail",
@@ -93,7 +91,10 @@ ui <- navbarPage(
 # Define server logic required to draw a histogram
 server <- function(input, output, session) {
 
-
+  observeEvent(input$btn_next, {
+    assign("test", reactiveValuesToList(input), envir = .GlobalEnv)
+    message("assigned test")
+  })
 
 }
 
