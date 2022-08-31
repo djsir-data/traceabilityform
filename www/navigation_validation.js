@@ -34,7 +34,25 @@ $(document).ready(function () {
     }
   });
 
+  // Add names to inputs (hyphens denote string split points server-side)
+  // Range and uncertainty inputs have -range and -uncertainty in id
+  $(
+    ".shiny-input-container:not(.shiny-input-radiogroup, .shiny-numeric-range-input, .headerOptions) input"
+  ).each(function () {
+    const newName = this.id + "-expected";
+    $(this).attr("name", newName);
+  });
+
+  $(".shiny-numeric-range-input").each(function () {
+    const newNameMin = this.id + "_min";
+    const newNameMax = this.id + "_max";
+    var inputs = $(this).find("input");
+    inputs.first().attr("name", newNameMin);
+    inputs.last().attr("name", newNameMax);
+  });
+
   // Navbar tab switch validation
+  var inputSet = {};
   $('a[data-toggle="tab"]').on("show.bs.tab", function (e) {
     var inputs = $("input:visible");
     inputs.removeClass("is-invalid");
@@ -43,6 +61,9 @@ $(document).ready(function () {
     inputs.each(function (index, value) {
       allValid = allValid & ($(value).val().length > 0);
     });
+
+    inputSet[activeTab] = collectInputs();
+    Shiny.onInputChange("input_set", inputSet);
 
     if (!Boolean(allValid)) {
       e.preventDefault();
@@ -128,4 +149,16 @@ $(document).ready(function () {
       $(".uncertaintyContent").slideUp();
     }
   });
+
+  // Data collection
+  function collectInputs() {
+    const inputObj = $(":input:visible").serializeArray();
+    const shinyoutput = {};
+
+    for (let i = 0; i < inputObj.length; i++) {
+      shinyoutput[inputObj[i]["name"]] = inputObj[i]["value"];
+    }
+
+    return shinyoutput;
+  }
 });
