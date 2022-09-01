@@ -1,0 +1,21 @@
+Package: traceabilityform
+Title: Website for tracability system cost-benefit analysis
+Version: 0.0.0.9000
+Authors@R: 
+    person("First", "Last", , "first.last@example.com", role = c("aut", "cre"),
+           comment = c(ORCID = "YOUR-ORCID-ID"))
+Description: 
+Provides a bootstrap website for a traceability system cost-benefit analysis 
+with forward and backwards navigation though various inputs with detailed 
+results and downloads at the end. 
+License: MIT + file LICENSE
+Encoding: UTF-8
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.1.2
+Imports: 
+    bslib,
+    data.table,
+    shiny,
+    shinyWidgets
+Suggests: 
+    readrba
