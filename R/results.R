@@ -37,9 +37,11 @@ parse_input_set <- function(set){
   set[, (to_numeric) := lapply(.SD, as.numeric), .SDcols = to_numeric]
 
   # Change uncertainty to alpha
-  alphas <- c(Low = 34, Medium = 6, High = 2)
-  set[, alpha := alphas[match(uncertainty, names(alphas))]]
-  set[, uncertainty := NULL]
+  if("uncertainty" %in% names(set)){
+    alphas <- c(Low = 34, Medium = 6, High = 2)
+    set[, alpha := alphas[match(uncertainty, names(alphas))]]
+    set[, uncertainty := NULL]
+  }
 
   return(set)
 }
