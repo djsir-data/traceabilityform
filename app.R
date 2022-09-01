@@ -91,9 +91,9 @@ ui <- navbarPage(
 # Define server logic required to draw a histogram
 server <- function(input, output, session) {
 
-  observeEvent(input$btn_next, {
-    assign("test", reactiveValuesToList(input), envir = .GlobalEnv)
-    message("assigned test")
+  observeEvent(input$tabset, {
+    req(input$tabset == "results")
+    assign("test", parse_input_set(input$input_set), envir = .GlobalEnv)
   })
 
 }
