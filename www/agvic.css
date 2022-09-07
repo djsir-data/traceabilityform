@@ -89,3 +89,13 @@
 .pretty .state label:before, .pretty .state label:after{
   top: calc((0% - (100% - 1em)) - 9%);
 }
+
+/*
+.valueCol{
+  font-family: monospace;
+}
+*/
+
+.valueCol{
+  text-align: right;
+}
