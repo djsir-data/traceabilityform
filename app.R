@@ -91,9 +91,24 @@ ui <- navbarPage(
 # Define server logic required to draw a histogram
 server <- function(input, output, session) {
 
+  # Get input metadata
+  input_meta <- readRDS("app-cache/input_metadata.rds")
+
+  # Results generation - only clean data once use is on results page
+  input_set <- reactiveVal(letters)
   observeEvent(input$tabset, {
-    req(input$tabset == "results")
-    assign("test", parse_input_set(input$input_set), envir = .GlobalEnv)
+    message("blah")
+    req(input$input_set)
+    req(any(names(input$input_set) != "Start"))
+    message("run")
+    assign("test", input$input_set, envir = .GlobalEnv)
+    input_set <- parse_input_set(input$input_set, input_meta)
+  })
+
+
+  # Non-uncertainty results generation
+  output$blah <- renderText({
+    head(input_set, 1)
   })
 
 }

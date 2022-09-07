@@ -17,6 +17,12 @@ $(document).ready(function () {
     activeTab = e.target.getAttribute("data-value");
   });
 
+  //Tab name tracker
+  var activeTabName = "Start";
+  $('a[data-toggle="tab"]').on("shown.bs.tab", function (e) {
+    activeTabName = $(e.target).text();
+  });
+
   // Nav button enable/disable
   $('a[data-toggle="tab"]').on("shown.bs.tab", function (e) {
     targetTab = e.target.getAttribute("data-value");
@@ -62,7 +68,7 @@ $(document).ready(function () {
       allValid = allValid & ($(value).val().length > 0);
     });
 
-    inputSet[activeTab] = collectInputs();
+    inputSet[activeTabName] = collectInputs();
     Shiny.onInputChange("input_set", inputSet);
 
     if (!Boolean(allValid)) {

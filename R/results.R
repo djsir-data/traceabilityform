@@ -1,10 +1,13 @@
 
 
-parse_input_set <- function(set){
+parse_input_set <- function(set, input_meta){
+
+  # Error handling
+  if(is.null(set)) return(NULL)
 
   # Remove any variables from the start or results tab
-  set$start <- NULL
-  set$results <- NULL
+  set$Start <- NULL
+  set$Results <- NULL
 
   # Turn tab inputs into matrix
   set <- lapply(
@@ -40,8 +43,18 @@ parse_input_set <- function(set){
   if("uncertainty" %in% names(set)){
     alphas <- c(Low = 34, Medium = 6, High = 2)
     set[, alpha := alphas[match(uncertainty, names(alphas))]]
+    set[,
+      beta := alpha * (range_max - range_min) / (expected - range_min) - alpha
+      ]
     set[, uncertainty := NULL]
   }
 
+  # Join metadata
+  # set <- input_meta[set, on = c("group", "variable")]
+
   return(set)
 }
+
+
+
+#
