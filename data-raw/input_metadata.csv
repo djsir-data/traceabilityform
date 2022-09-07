@@ -1,82 +1,82 @@
 group,variable,flow,units
-add_revenue,add_rev_cost,Ongoing cost,percent
-add_revenue,add_rev_other,Ongoing benefit,percent
-add_revenue,brand_value,Ongoing benefit,percent
-add_revenue,market_share,Ongoing benefit,percent
-add_revenue,new_markets,Ongoing benefit,percent
-add_revenue,new_product,Ongoing benefit,percent
-add_revenue,pricing,Ongoing benefit,percent
-add_revenue,product_ranging,Ongoing benefit,percent
-add_revenue,repeat_purchasing,Ongoing benefit,percent
-bus_costs,bus_ongoing_tot,Ongoing cost,dollar
-bus_costs,bus_software,Upfront cost,dollar
-bus_costs,bus_upfront_other,Upfront cost,dollar
-bus_costs,changeover,Upfront cost,dollar
-bus_costs,equipment,Upfront cost,dollar
-bus_costs,integration,Upfront cost,dollar
-bus_costs,labellers,Upfront cost,dollar
-bus_costs,labour,Upfront cost,dollar
-bus_costs,marketing_costs,Upfront cost,dollar
-bus_costs,printers,Upfront cost,dollar
-bus_costs,scanners,Upfront cost,dollar
-bus_costs,training,Upfront cost,dollar
-financials,cur_costs,Current costs,dollar
-financials,cur_rev,Current revenue,dollar
-red_costs,accreditation,Ongoing benefit,percent
-red_costs,audit_comp,Ongoing benefit,percent
-red_costs,auto,Ongoing benefit,percent
-red_costs,brand_prot,Ongoing benefit,percent
-red_costs,data,Ongoing benefit,percent
-red_costs,insurance,Ongoing benefit,percent
-red_costs,inventory,Ongoing benefit,percent
-red_costs,marketing_savings,Ongoing benefit,percent
-red_costs,packaging,Ongoing benefit,percent
-red_costs,quality,Ongoing benefit,percent
-red_costs,red_costs_other,Ongoing benefit,percent
-red_costs,rejections,Ongoing benefit,percent
-red_costs,supplychain,Ongoing benefit,percent
-red_crisis,bio_dollar_new,Crisis,dollar
-red_crisis,bio_dollar_old,Crisis,dollar
-red_crisis,bio_time_new,Crisis,number
-red_crisis,bio_time_old,Crisis,number
-red_crisis,claims_dollar_new,Crisis,dollar
-red_crisis,claims_dollar_old,Crisis,dollar
-red_crisis,claims_time_new,Crisis,number
-red_crisis,claims_time_old,Crisis,number
-red_crisis,recalls_dollar_new,Crisis,dollar
-red_crisis,recalls_dollar_old,Crisis,dollar
-red_crisis,recalls_time_new,Crisis,number
-red_crisis,recalls_time_old,Crisis,number
-red_crisis,weather_dollar_new,Crisis,dollar
-red_crisis,weather_dollar_old,Crisis,dollar
-red_crisis,weather_time_new,Crisis,number
-red_crisis,weather_time_old,Crisis,number
-sol_provider,consumables,Ongoing cost,dollar
-sol_provider,customisation,Upfront cost,dollar
-sol_provider,dashboard,Upfront cost,dollar
-sol_provider,installation,Upfront cost,dollar
-sol_provider,isobio_test,Upfront cost,dollar
-sol_provider,labelling,Upfront cost,dollar
-sol_provider,loggers,Upfront cost,dollar
-sol_provider,microsite_app,Upfront cost,dollar
-sol_provider,service,Ongoing cost,dollar
-sol_provider,site_visits,Upfront cost,dollar
-sol_provider,sol_equipment,Upfront cost,dollar
-sol_provider,sol_ongoing_other,Ongoing cost,dollar
-sol_provider,sol_upfront_other,Upfront cost,dollar
-sol_provider,subscription,Ongoing cost,dollar
-sol_provider,trace_standards,Upfront cost,dollar
-sol_provider,training,Upfront cost,dollar
-sol_provider,upgrades,Ongoing cost,dollar
-sup_chain,changeover,Upfront cost,dollar
-sup_chain,integration,Upfront cost,dollar
-sup_chain,mobile_app,Upfront cost,dollar
-sup_chain,sup_ongoing_tot,Ongoing cost,dollar
-sup_chain,sup_software,Upfront cost,dollar
-sup_chain,sup_upfront_other,Upfront cost,dollar
-add_revenue,add_rev_tot,Ongoing benefit,percent
-bus_costs,bus_upfront_tot,Upfront cost,dollar
-red_costs,red_costs_total,Ongoing benefit,percent
-sol_provider,sol_ongoing_tot,Ongoing cost,dollar
-sol_provider,sol_upfront_tot,Upfront cost,dollar
-sup_chain,sup_upfront_tot,Upfront cost,dollar
+New revenue,add_rev_cost,Ongoing cost,percent
+New revenue,add_rev_other,Ongoing benefit,percent
+New revenue,brand_value,Ongoing benefit,percent
+New revenue,market_share,Ongoing benefit,percent
+New revenue,new_markets,Ongoing benefit,percent
+New revenue,new_product,Ongoing benefit,percent
+New revenue,pricing,Ongoing benefit,percent
+New revenue,product_ranging,Ongoing benefit,percent
+New revenue,repeat_purchasing,Ongoing benefit,percent
+Business costs,bus_ongoing_tot,Ongoing cost,dollar
+Business costs,bus_software,Upfront cost,dollar
+Business costs,bus_upfront_other,Upfront cost,dollar
+Business costs,changeover,Upfront cost,dollar
+Business costs,equipment,Upfront cost,dollar
+Business costs,integration,Upfront cost,dollar
+Business costs,labellers,Upfront cost,dollar
+Business costs,labour,Upfront cost,dollar
+Business costs,marketing_costs,Upfront cost,dollar
+Business costs,printers,Upfront cost,dollar
+Business costs,scanners,Upfront cost,dollar
+Business costs,training,Upfront cost,dollar
+Current position,cur_costs,Current costs,dollar
+Current position,cur_rev,Current revenue,dollar
+Cost savings,accreditation,Ongoing benefit,percent
+Cost savings,audit_comp,Ongoing benefit,percent
+Cost savings,auto,Ongoing benefit,percent
+Cost savings,brand_prot,Ongoing benefit,percent
+Cost savings,data,Ongoing benefit,percent
+Cost savings,insurance,Ongoing benefit,percent
+Cost savings,inventory,Ongoing benefit,percent
+Cost savings,marketing_savings,Ongoing benefit,percent
+Cost savings,packaging,Ongoing benefit,percent
+Cost savings,quality,Ongoing benefit,percent
+Cost savings,red_costs_other,Ongoing benefit,percent
+Cost savings,rejections,Ongoing benefit,percent
+Cost savings,supplychain,Ongoing benefit,percent
+Crisis management,bio_dollar_new,Crisis,dollar
+Crisis management,bio_dollar_old,Crisis,dollar
+Crisis management,bio_time_new,Crisis,number
+Crisis management,bio_time_old,Crisis,number
+Crisis management,claims_dollar_new,Crisis,dollar
+Crisis management,claims_dollar_old,Crisis,dollar
+Crisis management,claims_time_new,Crisis,number
+Crisis management,claims_time_old,Crisis,number
+Crisis management,recalls_dollar_new,Crisis,dollar
+Crisis management,recalls_dollar_old,Crisis,dollar
+Crisis management,recalls_time_new,Crisis,number
+Crisis management,recalls_time_old,Crisis,number
+Crisis management,weather_dollar_new,Crisis,dollar
+Crisis management,weather_dollar_old,Crisis,dollar
+Crisis management,weather_time_new,Crisis,number
+Crisis management,weather_time_old,Crisis,number
+Provider costs,consumables,Ongoing cost,dollar
+Provider costs,customisation,Upfront cost,dollar
+Provider costs,dashboard,Upfront cost,dollar
+Provider costs,installation,Upfront cost,dollar
+Provider costs,isobio_test,Upfront cost,dollar
+Provider costs,labelling,Upfront cost,dollar
+Provider costs,loggers,Upfront cost,dollar
+Provider costs,microsite_app,Upfront cost,dollar
+Provider costs,service,Ongoing cost,dollar
+Provider costs,site_visits,Upfront cost,dollar
+Provider costs,sol_equipment,Upfront cost,dollar
+Provider costs,sol_ongoing_other,Ongoing cost,dollar
+Provider costs,sol_upfront_other,Upfront cost,dollar
+Provider costs,subscription,Ongoing cost,dollar
+Provider costs,trace_standards,Upfront cost,dollar
+Provider costs,training,Upfront cost,dollar
+Provider costs,upgrades,Ongoing cost,dollar
+Supply chain,changeover,Upfront cost,dollar
+Supply chain,integration,Upfront cost,dollar
+Supply chain,mobile_app,Upfront cost,dollar
+Supply chain,sup_ongoing_tot,Ongoing cost,dollar
+Supply chain,sup_software,Upfront cost,dollar
+Supply chain,sup_upfront_other,Upfront cost,dollar
+New revenue,add_rev_tot,Ongoing benefit,percent
+Business costs,bus_upfront_tot,Upfront cost,dollar
+Cost savings,red_costs_total,Ongoing benefit,percent
+Provider costs,sol_ongoing_tot,Ongoing cost,dollar
+Provider costs,sol_upfront_tot,Upfront cost,dollar
+Supply chain,sup_upfront_tot,Upfront cost,dollar
