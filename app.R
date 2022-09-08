@@ -101,8 +101,7 @@ server <- function(input, output, session) {
   })
 
   # Non-uncertainty results generation
-  output$blah <- renderUI({
-    assign("test2", input_set(), envir = .GlobalEnv)
+  output$table_summary <- renderUI({
     html_summ_table(summ_input_set(input_set()))
   })
 

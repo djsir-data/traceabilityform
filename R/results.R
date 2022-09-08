@@ -165,9 +165,8 @@ html_summ_table <- function(summ_data, discount_rate, n_years){
   summ_data[,
     value := format(
       value,
-      digits = 0,
+      digits = 1L,
       big.mark = ",",
-      justify = "right",
       justify = "none",
       scientific = FALSE
     )
@@ -195,9 +194,14 @@ html_summ_table <- function(summ_data, discount_rate, n_years){
     out <- apply(summ_data[flow == flow_name], 1, function(x){
       tags$tr(tags$td(x["group"]), tags$td(HTML(x["value"]), class = "valueCol"))
     })
-    # Add Row
+    # Add row heading
     out[[1]]$children <- list(
-      tags$th(flow_name, rowspan = flows[flow_name], scope = "row"),
+      tags$th(
+        HTML(gsub(" ", "</br>", flow_name)),
+        rowspan = flows[flow_name],
+        scope = "row",
+        class = "align-middle"
+        ),
       out[[1]]$children
       )
     return(out)
@@ -205,7 +209,7 @@ html_summ_table <- function(summ_data, discount_rate, n_years){
 
   # Generate table
   tags$table(
-    class = "table",
+    class = "table table-sm",
     tags$thead(),
     tags$tbody(
       lapply(names(flows), table_flow)

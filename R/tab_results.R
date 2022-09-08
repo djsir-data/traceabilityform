@@ -3,6 +3,16 @@ tab_results <- function(...) tabPanel(
   value = 'results',
   h2('Results'),
 
-  ## TEST
-  uiOutput("blah")
+  # Summary table
+  fluidRow(
+    column(
+      6,
+      uiOutput("table_summary")
+    ),
+    column(
+      6,
+      p("some example text")
+    )
+  )
+
 )
