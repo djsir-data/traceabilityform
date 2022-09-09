@@ -198,19 +198,20 @@ html_summ_table <- function(summ_data, discount_rate, n_years){
     # Generate table data
     out <- apply(summ_data[flow == flow_name], 1, function(x){
       tags$tr(
-        tags$td(x["group"]),
+        tags$td(x["group"], style = "padding-left: 2rem;"),
         tags$td(HTML(x["value"]), class = c("valueCol", x["text_class"]))
       )
     })
     # Add row heading
-    out[[1]]$children <- list(
-      tags$th(
-        HTML(gsub(" ", "</br>", flow_name)),
-        rowspan = flows[flow_name],
-        scope = "row",
-        class = "align-middle"
-        ),
-      out[[1]]$children
+    out <- tagList(
+      tags$tr(
+        tags$th(
+          flow_name,
+          # HTML(gsub(" ", "</br>", flow_name)),
+          colspan = 2
+        )
+      ),
+      out
       )
     return(out)
   }
@@ -223,9 +224,11 @@ html_summ_table <- function(summ_data, discount_rate, n_years){
       class = total_row_class,
       tags$th(
         paste0(n_years, "-year total"),
-        scope = "row",
-        rowspan = 2
-      ),
+        colspan = 2
+      )
+    ),
+    tags$tr(
+      class = total_row_class,
       tags$td("Discounted return on investment"),
       tags$td(table_percent(total_roi), class = "valueCol")
     ),
@@ -238,7 +241,7 @@ html_summ_table <- function(summ_data, discount_rate, n_years){
 
   # Generate table
   tags$table(
-    class = "table table-sm table-hover",
+    class = "table table-borderless table-hover",
     tags$thead(),
     tags$tbody(
       lapply(names(flows), table_flow),
