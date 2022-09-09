@@ -90,12 +90,9 @@
   top: calc((0% - (100% - 1em)) - 9%);
 }
 
-/*
 .valueCol{
-  font-family: monospace;
-}
-*/
-
-.valueCol{
-  text-align: right;
+  text-align: center;
+    font-family: monospace;
+    font-weight: bold;
+    font-size: 1.2rem;
 }
