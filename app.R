@@ -91,6 +91,11 @@ ui <- navbarPage(
 # Define server logic required to draw a histogram
 server <- function(input, output, session) {
 
+  # DEV feature
+  observeEvent(input$dev_prefill, {
+    prefill_values(input, output, session)
+  })
+
   # Get input metadata
   input_meta <- readRDS("app-cache/input_metadata.rds")
 
@@ -102,7 +107,12 @@ server <- function(input, output, session) {
 
   # Non-uncertainty results generation
   output$table_summary <- renderUI({
-    html_summ_table(summ_input_set(input_set()))
+    assign("test", input_set(), envir = .GlobalEnv)
+    html_summ_table(
+      summ_data     = summ_input_set(input_set()),
+      discount_rate = input$discount_rate,
+      n_years       = input$eval_period
+    )
   })
 
 }
