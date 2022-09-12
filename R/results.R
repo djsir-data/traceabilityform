@@ -178,7 +178,14 @@ html_summ_table <- function(summ_data, discount_rate, n_years){
   # Format values (see theme.R for table_dollar function)
   summ_data[,
     `:=`(
-      value = table_dollar(ifelse(flow == "Ongoing benefits", value, -value)),
+      prefix = ifelse(flow == "Ongoing benefits", "+$", "-$"),
+      value = format(
+        abs(value),
+        digits = 1L,
+        big.mark = ",",
+        justify = "none",
+        scientific = FALSE,
+      ),
       text_class = ifelse(
         flow == "Ongoing benefits",
         "text-success",
@@ -193,13 +200,32 @@ html_summ_table <- function(summ_data, discount_rate, n_years){
   # set up flows
   flows <- table(summ_data$flow)
 
+  # Value column formatting
+  val_col_width <- max(
+    nchar(summ_data$value),
+    nchar(format(total_dollar, digits = 1, big.mark = ",", scientific = FALSE)),
+    nchar(format(total_roi, digits = 1, big.mark = ",", scientific = FALSE))
+  )
+  val_col_css <- paste0("width: ", val_col_width, ";text-align: right;")
+
+  # group/prefix/suffix column formatting
+  group_col_css <- "padding-left: 2rem;"
+  pre_col_css <- "width: 2rem;text-align: right;"
+  suf_col_css <- "width: 1rem;text-align: left;"
+
   # Table flow fun
   table_flow <- function(flow_name){
     # Generate table data
     out <- apply(summ_data[flow == flow_name], 1, function(x){
       tags$tr(
-        tags$td(x["group"], style = "padding-left: 2rem;"),
-        tags$td(HTML(x["value"]), class = c("valueCol", x["text_class"]))
+        # Group name
+        tags$td(x["group"], style = group_col_css),
+        # Dollar sign prefix col
+        tags$td(x["prefix"], class = x["text_class"], style = pre_col_css),
+        # Value col
+        tags$td(x["value"], class = x["text_class"], style = val_col_css),
+        # Suffix column
+        tags$td("", style = suf_col_css)
       )
     })
     # Add row heading
@@ -207,8 +233,7 @@ html_summ_table <- function(summ_data, discount_rate, n_years){
       tags$tr(
         tags$th(
           flow_name,
-          # HTML(gsub(" ", "</br>", flow_name)),
-          colspan = 2
+          colspan = 4
         )
       ),
       out
