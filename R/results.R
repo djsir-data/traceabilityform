@@ -135,12 +135,17 @@ html_summ_table <- function(summ_data, discount_rate, n_years){
   # discount_v <- function(x) x * (1 - ( 1 + discount_rate) ^ (-1:(-n_years))) / discount_rate
 
   # Totals
-  total_dollar <- discount(ongoing_benefits) -
-    upfront_costs -
-    discount(ongoing_costs)
+  total_dollar <- round(
+    discount(ongoing_benefits) -
+      upfront_costs -
+      discount(ongoing_costs)
+  )
 
-  total_roi <- discount(ongoing_benefits) /
-    (upfront_costs + discount(ongoing_costs)) - 1
+  total_roi <- round(
+    discount(ongoing_benefits) /
+      (upfront_costs + discount(ongoing_costs)) - 1,
+    1
+  )
 
   # Recode variables
   summ_data[
@@ -179,6 +184,17 @@ html_summ_table <- function(summ_data, discount_rate, n_years){
   summ_data[,
     `:=`(
       prefix = ifelse(flow == "Ongoing benefits", "+$", "-$"),
+      suffix = ifelse(
+        flow == "Upfront costs",
+        "",
+        as.character(
+          tags$abbr(
+            "p.a.",
+            title = "Per Annum",
+            style = "text-decoration: none;"
+            )
+          )
+        ),
       value = format(
         abs(value),
         digits = 1L,
@@ -203,15 +219,15 @@ html_summ_table <- function(summ_data, discount_rate, n_years){
   # Value column formatting
   val_col_width <- max(
     nchar(summ_data$value),
-    nchar(format(total_dollar, digits = 1, big.mark = ",", scientific = FALSE)),
-    nchar(format(total_roi, digits = 1, big.mark = ",", scientific = FALSE))
+    nchar(format(total_dollar, big.mark = ",", scientific = FALSE)),
+    nchar(format(total_roi, big.mark = ",", scientific = FALSE))
   )
   val_col_css <- paste0("width: ", val_col_width, ";text-align: right;")
 
   # group/prefix/suffix column formatting
   group_col_css <- "padding-left: 2rem;"
   pre_col_css <- "width: 2rem;text-align: right;"
-  suf_col_css <- "width: 1rem;text-align: left;"
+  suf_col_css <- "width: 2rem;text-align: left;"
 
   # Table flow fun
   table_flow <- function(flow_name){
@@ -225,7 +241,7 @@ html_summ_table <- function(summ_data, discount_rate, n_years){
         # Value col
         tags$td(x["value"], class = x["text_class"], style = val_col_css),
         # Suffix column
-        tags$td("", style = suf_col_css)
+        tags$td(HTML(x["suffix"]), class = x["text_class"], style = suf_col_css)
       )
     })
     # Add row heading
@@ -246,21 +262,27 @@ html_summ_table <- function(summ_data, discount_rate, n_years){
 
   total_rows <- tagList(
     tags$tr(
-      class = total_row_class,
+      style = "border-top: 2px solid;",
+      # class = total_row_class,
       tags$th(
         paste0(n_years, "-year total"),
-        colspan = 2
+        colspan = 5
       )
     ),
     tags$tr(
-      class = total_row_class,
-      tags$td("Discounted return on investment"),
-      tags$td(table_percent(total_roi), class = "valueCol")
+      # class = total_row_class,
+      tags$td("Discounted return on investment", style = group_col_css),
+      tags$td(ifelse(total_roi > 0, "+ ", "- "), style = pre_col_css),
+      tags$td(format(total_roi, big.mark = ","), style = val_col_css),
+      tags$td("%", style = suf_col_css)
     ),
     tags$tr(
-      class = total_row_class,
-      tags$td("Discounted returns"),
-      tags$td(table_dollar(total_dollar), class = "valueCol")
+      # class = total_row_class,
+      style = "border-bottom: thick double;",
+      tags$td("Discounted returns", style = group_col_css),
+      tags$td(ifelse(total_dollar > 0, "+$", "-$"), style = pre_col_css),
+      tags$td(format(total_dollar, big.mark = ","), style = val_col_css),
+      tags$td("", style = suf_col_css)
     )
   )
 
