@@ -90,9 +90,6 @@
   top: calc((0% - (100% - 1em)) - 9%);
 }
 
-.valueCol{
-  text-align: center;
-    font-family: monospace;
-    font-weight: bold;
-    font-size: 1.2rem;
+.highchart.html-widget.html-widget-output{
+  overflow: visible !important;
 }

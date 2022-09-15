@@ -3,7 +3,7 @@ library(data.table)
 library(shiny)
 library(bslib)
 library(shinyWidgets)
-# library(highcharter)
+library(highcharter)
 
 
 # Get functions from R directory
@@ -99,20 +99,103 @@ server <- function(input, output, session) {
   # Get input metadata
   input_meta <- readRDS("app-cache/input_metadata.rds")
 
-  # Results generation - only clean data once use is on results page
+  # Results generation - only clean data once user is on results page
   input_set <- reactive({
     req(input$tabset == "results")
     parse_input_set(input$input_set, input_meta)
+  })
+
+  input_summary <- reactive({
+    summ_input_set(input_set())
+  })
+
+  # Cost benefit totals
+  ongoing_benefits <- reactive({
+    input_summary()[flow == "Ongoing benefit", sum(value)]}
+    )
+  ongoing_costs <- reactive({
+    input_summary()[flow == "Ongoing cost", sum(value)]
+    })
+  upfront_costs <- reactive({
+    input_summary()[flow == "Upfront cost", sum(value)]
+    })
+
+
+
+  # ROI and absolute returns generation
+  roi <- reactive({
+
+    discount_rate <- input$discount_rate
+    n_years <- input$eval_period
+
+    round(
+      discount(ongoing_benefits()) /
+        (upfront_costs() + discount(ongoing_costs())) - 1,
+      1
+    )
+  })
+
+  roi_v <- reactive({
+
+    discount_rate <- input$discount_rate
+    n_years <- input$eval_period
+
+    round(
+      discount_v(ongoing_benefits()) /
+        (upfront_costs() + discount_v(ongoing_costs())) - 1,
+      1
+    )
+  })
+
+  returns <- reactive({
+
+    discount_rate <- input$discount_rate
+    n_years <- input$eval_period
+
+    round(
+      discount(ongoing_benefits()) -
+        upfront_costs() -
+        discount(ongoing_costs())
+    )
+  })
+
+  # When will the business break even
+  break_even_year <- reactive({
+
+    discount_rate <- input$discount_rate
+    n_years <- input$eval_period
+
+    if(any(roi_v() >= 0)){
+      which(roi_v() >= 0)[1]
+    } else {
+      as.integer(NA)
+    }
+
+  })
+
+  # Results card
+  output$results_card <- renderUI({
+    results_card(
+      roi = roi(),
+      results = returns(),
+      n_years = input$eval_period,
+      break_even_year = break_even_year()
+    )
   })
 
   # Non-uncertainty results generation
   output$table_summary <- renderUI({
     assign("test", input_set(), envir = .GlobalEnv)
     html_summ_table(
-      summ_data     = summ_input_set(input_set()),
+      summ_data     = input_summary(),
       discount_rate = input$discount_rate,
       n_years       = input$eval_period
     )
+  })
+
+  # Annual chart
+  output$annual_chart <- renderHighchart({
+    viz_annual_benefits(input_summary(), input$discount_rate, input$eval_period)
   })
 
 }

@@ -1,33 +1,74 @@
-table_dollar <- function(x, prefix = "$", suffix = ""){
-  sign <- ifelse(x > 0, "+", "-")
-  is_0 <- x == 0
+ag_chart <- function(hc){
 
-  x <- format(
-    abs(x),
-    digits = 1L,
-    big.mark = ",",
-    justify = "right",
-    scientific = FALSE,
+  highcharter::hc_add_theme(
+    hc,
+    highcharter::hc_theme(
+      chart = list(
+        backgroundColor = NULL,
+        style = list(
+          fontFamily = "VIC-Regular",
+          `font-size` = "var(--bs-body-font-size)",
+          color = "#000000",
+          overflow = "visible"
+        )
+      ),
+      title = list(
+        align = "left",
+        style = list(
+          color = "#000000",
+          fontFamily = "VIC-Regular",
+          `font-weight` =  "bold",
+          `font-size` = "2rem",
+          `background-color` = "#000000"
+        )
+      ),
+      subtitle = list(
+        align = "left",
+        style = list(
+          color = "#000000",
+          fontFamily = "VIC-Regular",
+          `font-size` = "var(--bs-body-font-size)"
+        )
+      ),
+      xAxis = list(
+        labels = list(
+          style = list(
+            color = "#000000",
+            `font-size` = "var(--bs-body-font-size)"
+          )
+        ),
+        title = list(style = list(color = "#000000", `font-weight` =  "bold")),
+        lineWidth = 3,
+        lineColor = "#000000",
+        tickPosition = "inside",
+        tickColor = "#000000",
+        tickWidth = 3,
+        tickLength = 7
+      ),
+      yAxis = list(
+        labels = list(
+          style = list(
+            color = "#000000",
+            `font-size` = "var(--bs-body-font-size)"
+          )
+        ),
+        title = list(style = list(color = "#000000", `font-weight` =  "bold")),
+        minorGridLineWidth = 0,
+        lineWidth = 3,
+        lineColor = "#000000",
+        gridLineColor = "transparent",
+        opposite = FALSE
+      ),
+      caption = list(
+        style = list(
+          color = "#000000"
+        )
+      ),
+      series = list(
+        line = list(lineWidth = 4),
+        spline = list(lineWidth = 4)
+      )
+    )
   )
-  x <- paste0(sign, prefix, x, suffix)
-  x <- gsub(" ", "&nbsp;", x)
-  x[is_0] <- "-"
-  return(x)
-}
 
-table_percent <- function(x, prefix = "", suffix = "%"){
-  sign <- ifelse(x > 0, "+", "-")
-  is_0 <- x == 0
-
-  x <- format(
-    abs(x),
-    digits = 1L,
-    big.mark = ",",
-    justify = "right",
-    scientific = FALSE
-  )
-  x <- paste0(sign, prefix, x, suffix)
-  x <- gsub(" ", "&nbsp;", x)
-  x[is_0] <- "-"
-  return(x)
 }

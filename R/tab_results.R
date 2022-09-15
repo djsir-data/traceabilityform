@@ -2,17 +2,20 @@ tab_results <- function(...) tabPanel(
   title = 'Results',
   value = 'results',
   h2('Results'),
+  fluidRow(
+    uiOutput("results_card")
+  ),
 
   # Summary table
   fluidRow(
     column(
       6,
-      uiOutput("table_summary")
+      highchartOutput("annual_chart", height = "550px")
     ),
     column(
       6,
-      p("some example text")
+      uiOutput("table_summary")
     )
   )
-
 )
+
