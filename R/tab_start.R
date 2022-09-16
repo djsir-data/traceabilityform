@@ -22,7 +22,8 @@ tab_start <- function(...) tabPanel(
   ),
 
   # Dev options
-  actionButton("dev_prefill", "DEV - Prefill dummy values"),
+  actionButton("dev_prefill", "DEV - Skip to results") %>%
+    tagAppendAttributes(class = 'btn-danger'),
 
   # Advanced content
   div(

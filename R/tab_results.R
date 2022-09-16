@@ -1,19 +1,26 @@
 tab_results <- function(...) tabPanel(
   title = 'Results',
   value = 'results',
+
+
   h2('Results'),
-  fluidRow(
-    uiOutput("results_card")
+  div(
+    class = "row",
+    div(
+      class = "col py-4",
+      uiOutput("results_card")
+    )
   ),
 
   # Summary table
-  fluidRow(
-    column(
-      6,
+  div(
+    class = "row g-5",
+    div(
+      class = "col-md-6",
       highchartOutput("annual_chart", height = "550px")
     ),
-    column(
-      6,
+    div(
+      class = "col-md-6",
       uiOutput("table_summary")
     )
   )

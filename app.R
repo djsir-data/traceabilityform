@@ -33,10 +33,11 @@ ui <- navbarPage(
   # Page options
   id = "tabset",
   selected = "start",
+  # fluid = FALSE,
   collapsible = TRUE,
   lang = "en",
   theme = bs_theme_update(
-    bs_theme(bootswatch = "flatly"),
+    bs_theme(bootswatch = "flatly", version = 5),
     primary = "#67823A",
     secondary = "#53565A",
     success = "#759157",
@@ -125,37 +126,37 @@ server <- function(input, output, session) {
   # ROI and absolute returns generation
   roi <- reactive({
 
-    discount_rate <- input$discount_rate
-    n_years <- input$eval_period
+    i <- input$discount_rate / 100
+    n <- input$eval_period
 
     round(
-      discount(ongoing_benefits()) /
-        (upfront_costs() + discount(ongoing_costs())) - 1,
+      discount(ongoing_benefits(), i, n) /
+        (upfront_costs() + discount(ongoing_costs(), i, n)) - 1,
       1
     )
   })
 
   roi_v <- reactive({
 
-    discount_rate <- input$discount_rate
-    n_years <- input$eval_period
+    i <- input$discount_rate / 100
+    n <- input$eval_period
 
     round(
-      discount_v(ongoing_benefits()) /
-        (upfront_costs() + discount_v(ongoing_costs())) - 1,
+      discount_v(ongoing_benefits(), i, n) /
+        (upfront_costs() + discount_v(ongoing_costs(), i, n)) - 1,
       1
     )
   })
 
   returns <- reactive({
 
-    discount_rate <- input$discount_rate
-    n_years <- input$eval_period
+    i <- input$discount_rate / 100
+    n <- input$eval_period
 
     round(
-      discount(ongoing_benefits()) -
+      discount(ongoing_benefits(), i, n) -
         upfront_costs() -
-        discount(ongoing_costs())
+        discount(ongoing_costs(), i, n)
     )
   })
 
@@ -185,7 +186,6 @@ server <- function(input, output, session) {
 
   # Non-uncertainty results generation
   output$table_summary <- renderUI({
-    assign("test", input_set(), envir = .GlobalEnv)
     html_summ_table(
       summ_data     = input_summary(),
       discount_rate = input$discount_rate,

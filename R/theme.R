@@ -8,8 +8,7 @@ ag_chart <- function(hc){
         style = list(
           fontFamily = "VIC-Regular",
           `font-size` = "var(--bs-body-font-size)",
-          color = "#000000",
-          overflow = "visible"
+          color = "#000000"
         )
       ),
       title = list(
@@ -50,7 +49,8 @@ ag_chart <- function(hc){
           style = list(
             color = "#000000",
             `font-size` = "var(--bs-body-font-size)"
-          )
+          ),
+          y = 5
         ),
         title = list(style = list(color = "#000000", `font-weight` =  "bold")),
         minorGridLineWidth = 0,

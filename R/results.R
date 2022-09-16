@@ -120,30 +120,32 @@ summ_input_set <- function(input_set){
 # Title card
 results_card <- function(roi, results, n_years, break_even_year){
 
+  returns_sign <- if(results < 0 ) "-$" else "+$"
+
   # Card text
   out_text <- if(roi >= 0){
-    p(
+    paste0(
       "Results suggest traceability systems should benefit your business with ",
       tags$b("a total ", roi, "% discounted return on investment"),
-      " (", results, ") over ", n_years, " years. ",
+      " (", returns_sign, abs(results), ") over ", n_years, " years. ",
       tags$b(
         "Your business should break even on traceability systems within ",
         break_even_year, " years. "
       )
     )
   } else {
-    p(
-      "Results suggest traceability systems will not benefit your business",
+    paste0(
+      "Results suggest traceability systems will not benefit your business ",
       "with ", tags$b("a total ", roi, "% discounted return on investment"),
-      " (", results, ") over ", n_years, " years. "
+      " (", returns_sign, abs(results), ") over ", n_years, " years. "
     )
   }
 
   # Card icon
   out_icon <- if(roi >= 0){
-    icon("circle-check", class = "text-success")
+    icon("circle-check")#, class = "text-success")
   } else (
-    icon("circle-xmark", class = "text-danger")
+    icon("circle-xmark")#, class = "text-danger")
   )
 
   # Cart title
@@ -153,19 +155,26 @@ results_card <- function(roi, results, n_years, break_even_year){
     "Traceability is not right for you"
   )
 
+  # Header class
+  header_class <- if(roi > 0){
+    "card-header text-white bg-success"
+  } else {
+    "card-header text-white bg-danger"
+  }
+
 
   # out
   return(
     div(
       class = "card",
       div(
-        class = "card-header",
+        class = header_class,
         out_icon,
         out_title
       ),
       div(
         class = "card-body",
-        out_text
+        HTML(out_text)
       )
     )
   )
@@ -191,14 +200,14 @@ html_summ_table <- function(summ_data, discount_rate, n_years){
 
   # Totals
   total_dollar <- round(
-    discount(ongoing_benefits) -
+    discount(ongoing_benefits, discount_rate, n_years) -
       upfront_costs -
-      discount(ongoing_costs)
+      discount(ongoing_costs, discount_rate, n_years)
   )
 
   total_roi <- round(
-    discount(ongoing_benefits) /
-      (upfront_costs + discount(ongoing_costs)) - 1,
+    discount(ongoing_benefits, discount_rate, n_years) /
+      (upfront_costs + discount(ongoing_costs, discount_rate, n_years)) - 1,
     1
   )
 
@@ -327,7 +336,7 @@ html_summ_table <- function(summ_data, discount_rate, n_years){
         style = paste0(pre_col_css, "font-weight: bold;")
       ),
       tags$td(
-        format(total_roi, big.mark = ",", scientific = FALSE),
+        format(abs(total_roi), big.mark = ",", scientific = FALSE),
         class = total_class,
         style = paste0(val_col_css, "font-weight: bold;")
       ),
@@ -346,7 +355,7 @@ html_summ_table <- function(summ_data, discount_rate, n_years){
         style = paste0(pre_col_css, "font-weight: bold;")
       ),
       tags$td(
-        format(total_dollar, big.mark = ",", scientific = FALSE),
+        format(abs(total_dollar), big.mark = ",", scientific = FALSE),
         class = total_class,
         style = paste0(val_col_css, "font-weight: bold;")
       ),
@@ -393,22 +402,14 @@ viz_annual_benefits <- function(
   # Change discount rate to decimal
   discount_rate <- discount_rate / 100
 
-  # Discounting function
-  discount_v <- function(x) x * (1 - ( 1 + discount_rate) ^ (-1:(-n_years))) / discount_rate
-
   # Chart series
   series <- if(type == "roi"){
-    round(
-      discount_v(ongoing_benefits) /
-        (upfront_costs + discount_v(ongoing_costs)) - 1,
-      1
-    )
+      discount_v(ongoing_benefits, discount_rate, n_years) /
+        (upfront_costs + discount_v(ongoing_costs, discount_rate, n_years)) - 1
   } else {
-    round(
-      discount_v(ongoing_benefits) -
+      discount_v(ongoing_benefits, discount_rate, n_years) -
         upfront_costs -
-        discount_v(ongoing_costs)
-    )
+        discount_v(ongoing_costs, discount_rate, n_years)
   }
 
   # Add year information
@@ -423,6 +424,7 @@ viz_annual_benefits <- function(
     y = series,
     group = chart_lab
   )
+
   hchart(
     series,
     "spline",
@@ -453,7 +455,8 @@ viz_annual_benefits <- function(
     ) %>%
     hc_tooltip(
       valuePrefix = chart_prefix,
-      valueSuffix = chart_suffix
+      valueSuffix = chart_suffix,
+      valueDecimals = 2
     )
 }
 
