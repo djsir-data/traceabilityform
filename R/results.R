@@ -98,11 +98,11 @@ summ_input_set <- function(input_set){
   crisis <- dcast(crisis, variable + measure ~ time, value.var = "expected")
   crisis <- crisis[, .(new = prod(new), old = prod(old)), variable]
   crisis <- crisis[,
-                   .(
-                     group = "Crisis management",
-                     flow = ifelse(sum(old - new) >= 0, "Ongoing benefit", "Ongoing cost"),
-                     expected = abs(sum(old - new)) / 5
-                   )
+    .(
+      group = "Crisis management",
+      flow = ifelse(sum(old - new) >= 0, "Ongoing benefit", "Ongoing cost"),
+      expected = abs(sum(old - new)) / 5
+    )
   ]
 
   # Bind crisis back in
@@ -127,11 +127,11 @@ results_card <- function(roi, results, n_years, break_even_year){
     paste0(
       "Results suggest traceability systems should benefit your business with ",
       tags$b("a total ", round(roi, 1), "% discounted return on investment"),
-      " (or ", returns_sign, round(abs(results)), ") over ", n_years,
-      " years. Inputs indicate ",
+      " (or ", returns_sign, format(round(abs(results)), big.mark = ","),
+      ") over ", n_years, " years. Inputs indicate ",
       tags$b(
         "your business should break even on traceability systems within ",
-        break_even_year, " years. "
+        break_even_year, " year", if(break_even_year > 1){"s"}, "."
       )
     )
   } else {
@@ -141,7 +141,8 @@ results_card <- function(roi, results, n_years, break_even_year){
       tags$b(
         "a total ", round(roi, 1), "% discounted return on investment"
         ),
-      " (or ", returns_sign, round(abs(results)), ") over ", n_years, " years."
+      " (or ", returns_sign, format(round(abs(results)), big.mark = ","),
+      ") over ", n_years, " years."
     )
   }
 

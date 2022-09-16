@@ -94,7 +94,11 @@ server <- function(input, output, session) {
 
   # DEV feature
   observeEvent(input$dev_prefill, {
-    prefill_values(input, output, session)
+    prefill_values(FALSE, input, output, session)
+  })
+
+  observeEvent(input$dev_prefill_uncertainty, {
+    prefill_values(TRUE, input, output, session)
   })
 
   # Get input metadata
