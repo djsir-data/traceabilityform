@@ -120,24 +120,28 @@ summ_input_set <- function(input_set){
 # Title card
 results_card <- function(roi, results, n_years, break_even_year){
 
-  returns_sign <- if(results < 0 ) "-$" else "+$"
+  returns_sign <- if(results < 0 ) "-$" else "$"
 
   # Card text
   out_text <- if(roi >= 0){
     paste0(
       "Results suggest traceability systems should benefit your business with ",
-      tags$b("a total ", roi, "% discounted return on investment"),
-      " (", returns_sign, abs(results), ") over ", n_years, " years. ",
+      tags$b("a total ", round(roi, 1), "% discounted return on investment"),
+      " (or ", returns_sign, round(abs(results)), ") over ", n_years,
+      " years. Inputs indicate ",
       tags$b(
-        "Your business should break even on traceability systems within ",
+        "your business should break even on traceability systems within ",
         break_even_year, " years. "
       )
     )
   } else {
     paste0(
       "Results suggest traceability systems will not benefit your business ",
-      "with ", tags$b("a total ", roi, "% discounted return on investment"),
-      " (", returns_sign, abs(results), ") over ", n_years, " years. "
+      "with ",
+      tags$b(
+        "a total ", round(roi, 1), "% discounted return on investment"
+        ),
+      " (or ", returns_sign, round(abs(results)), ") over ", n_years, " years."
     )
   }
 

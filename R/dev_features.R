@@ -1,32 +1,28 @@
 prefill_values <- function(input, output, session){
 
-  # Update values
-  updateNumericInput(session = session, "cur_rev", value = 1000)
-  updateNumericInput(session = session, "cur_costs", value = 400)
-  updateNumericInput(session = session, "add_rev_tot", value = 3)
-  updateNumericInput(session = session, "red_costs_total", value = 3)
-  updateNumericInput(session = session, "claims_dollar_old", value = 100)
-  updateNumericInput(session = session, "claims_time_old", value = 3)
-  updateNumericInput(session = session, "claims_dollar_new", value = 100)
-  updateNumericInput(session = session, "claims_time_new", value = 1)
-  updateNumericInput(session = session, "recalls_dollar_old", value = 100)
-  updateNumericInput(session = session, "recalls_time_old", value = 1)
-  updateNumericInput(session = session, "recalls_dollar_new", value = 100)
-  updateNumericInput(session = session, "recalls_time_new", value = 1)
-  updateNumericInput(session = session, "bio_dollar_old", value = 100)
-  updateNumericInput(session = session, "bio_time_old", value = 1)
-  updateNumericInput(session = session, "bio_dollar_new", value = 100)
-  updateNumericInput(session = session, "bio_time_new", value = 1)
-  updateNumericInput(session = session, "weather_dollar_old", value = 100)
-  updateNumericInput(session = session, "weather_time_old", value = 1)
-  updateNumericInput(session = session, "weather_dollar_new", value = 100)
-  updateNumericInput(session = session, "weather_time_new", value = 0)
-  updateNumericInput(session = session, "sol_upfront_tot", value = 100)
-  updateNumericInput(session = session, "sol_ongoing_tot", value = 1)
-  updateNumericInput(session = session, "bus_upfront_tot", value = 1)
-  updateNumericInput(session = session, "bus_ongoing_tot", value = 1)
-  updateNumericInput(session = session, "sup_upfront_tot", value = 1)
-  updateNumericInput(session = session, "sup_ongoing_tot", value = 1)
+  # Update values based on dummy dataset
+  dummy <- fread("data-raw/dummy_inputs.csv")
+
+  mapply(
+    updateNumericInput,
+    session = list(session),
+    inputId = dummy$variable,
+    value = dummy$value
+  )
+
+  mapply(
+    updateNumericRangeInput,
+    session = list(session),
+    inputId = paste0(dummy$variable, "-range"),
+    value = t(dummy[, .(min, max)]) %>% as.data.frame() %>% as.list()
+  )
+
+  mapply(
+    updateRadioGroupButtons,
+    session = list(session),
+    inputId = paste0(dummy$variable, "-uncertainty"),
+    selected = dummy$uncertainty
+  )
 
   # Run through tabs to generate input_set
   lapply(

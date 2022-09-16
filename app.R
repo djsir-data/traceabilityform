@@ -107,19 +107,21 @@ server <- function(input, output, session) {
   })
 
   input_summary <- reactive({
+    .GlobalEnv$test_input_set <- input_set()
     summ_input_set(input_set())
   })
 
   # Cost benefit totals
   ongoing_benefits <- reactive({
+    .GlobalEnv$test_input_summary <- input_summary()
     input_summary()[flow == "Ongoing benefit", sum(value)]}
-    )
+  )
   ongoing_costs <- reactive({
     input_summary()[flow == "Ongoing cost", sum(value)]
-    })
+  })
   upfront_costs <- reactive({
     input_summary()[flow == "Upfront cost", sum(value)]
-    })
+  })
 
 
 
@@ -129,11 +131,8 @@ server <- function(input, output, session) {
     i <- input$discount_rate / 100
     n <- input$eval_period
 
-    round(
-      discount(ongoing_benefits(), i, n) /
-        (upfront_costs() + discount(ongoing_costs(), i, n)) - 1,
-      1
-    )
+    discount(ongoing_benefits(), i, n) /
+      (upfront_costs() + discount(ongoing_costs(), i, n)) - 1
   })
 
   roi_v <- reactive({
@@ -141,11 +140,8 @@ server <- function(input, output, session) {
     i <- input$discount_rate / 100
     n <- input$eval_period
 
-    round(
-      discount_v(ongoing_benefits(), i, n) /
-        (upfront_costs() + discount_v(ongoing_costs(), i, n)) - 1,
-      1
-    )
+    discount_v(ongoing_benefits(), i, n) /
+      (upfront_costs() + discount_v(ongoing_costs(), i, n)) - 1
   })
 
   returns <- reactive({
@@ -153,11 +149,9 @@ server <- function(input, output, session) {
     i <- input$discount_rate / 100
     n <- input$eval_period
 
-    round(
-      discount(ongoing_benefits(), i, n) -
-        upfront_costs() -
-        discount(ongoing_costs(), i, n)
-    )
+    discount(ongoing_benefits(), i, n) -
+      upfront_costs() -
+      discount(ongoing_costs(), i, n)
   })
 
   # When will the business break even

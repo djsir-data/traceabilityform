@@ -1,0 +1,82 @@
+group,variable,flow,units,value,min,max,uncertainty
+New revenue,add_rev_cost,Ongoing cost,percent,3,0,4.8,Medium
+New revenue,add_rev_other,Ongoing benefit,percent,0.5,0,0.8,Medium
+New revenue,brand_value,Ongoing benefit,percent,0.5,0,0.8,Medium
+New revenue,market_share,Ongoing benefit,percent,0.5,0,0.8,Medium
+New revenue,new_markets,Ongoing benefit,percent,0.5,0,0.8,Medium
+New revenue,new_product,Ongoing benefit,percent,0.5,0,0.8,Medium
+New revenue,pricing,Ongoing benefit,percent,0.5,0,0.8,Medium
+New revenue,product_ranging,Ongoing benefit,percent,0.5,0,0.8,Medium
+New revenue,repeat_purchasing,Ongoing benefit,percent,0.5,0,0.8,Medium
+Business costs,bus_ongoing_tot,Ongoing cost,dollar,100,80,120,High
+Business costs,bus_software,Upfront cost,dollar,100,80,120,High
+Business costs,bus_upfront_other,Upfront cost,dollar,100,80,120,High
+Business costs,bus_changeover,Upfront cost,dollar,100,80,120,High
+Business costs,equipment,Upfront cost,dollar,100,80,120,High
+Business costs,bus_integration,Upfront cost,dollar,100,80,120,High
+Business costs,labellers,Upfront cost,dollar,100,80,120,High
+Business costs,labour,Upfront cost,dollar,100,80,120,High
+Business costs,marketing_costs,Upfront cost,dollar,100,80,120,High
+Business costs,printers,Upfront cost,dollar,100,80,120,High
+Business costs,scanners,Upfront cost,dollar,100,80,120,High
+Business costs,bus_training,Upfront cost,dollar,100,80,120,High
+Current position,cur_costs,Current costs,dollar,400000,400000,400000,High
+Current position,cur_rev,Current revenue,dollar,500000,500000,500000,High
+Cost savings,accreditation,Ongoing benefit,percent,0.1,0,0.16,Medium
+Cost savings,audit_comp,Ongoing benefit,percent,0.1,0,0.16,Medium
+Cost savings,auto,Ongoing benefit,percent,0.1,0,0.16,Medium
+Cost savings,brand_prot,Ongoing benefit,percent,0.1,0,0.16,Medium
+Cost savings,data,Ongoing benefit,percent,0.1,0,0.16,Medium
+Cost savings,insurance,Ongoing benefit,percent,0.1,0,0.16,Medium
+Cost savings,inventory,Ongoing benefit,percent,0.1,0,0.16,Medium
+Cost savings,marketing_savings,Ongoing benefit,percent,0.1,0,0.16,Medium
+Cost savings,packaging,Ongoing benefit,percent,0.1,0,0.16,Medium
+Cost savings,quality,Ongoing benefit,percent,0.1,0,0.16,Medium
+Cost savings,red_costs_other,Ongoing benefit,percent,0.1,0,0.16,Medium
+Cost savings,rejections,Ongoing benefit,percent,0.1,0,0.16,Medium
+Cost savings,supplychain,Ongoing benefit,percent,0.1,0,0.16,Medium
+Crisis management,bio_dollar_new,Crisis,dollar,900,800,1000,Medium
+Crisis management,bio_dollar_old,Crisis,dollar,1000,900,1100,Medium
+Crisis management,bio_time_new,Crisis,number,1,1,1,Medium
+Crisis management,bio_time_old,Crisis,number,2,2,2,Medium
+Crisis management,claims_dollar_new,Crisis,dollar,900,800,1000,Medium
+Crisis management,claims_dollar_old,Crisis,dollar,1000,900,1100,Medium
+Crisis management,claims_time_new,Crisis,number,1,1,1,Medium
+Crisis management,claims_time_old,Crisis,number,2,2,2,Medium
+Crisis management,recalls_dollar_new,Crisis,dollar,900,800,1000,Medium
+Crisis management,recalls_dollar_old,Crisis,dollar,1000,900,1100,Medium
+Crisis management,recalls_time_new,Crisis,number,1,1,1,Medium
+Crisis management,recalls_time_old,Crisis,number,2,2,2,Medium
+Crisis management,weather_dollar_new,Crisis,dollar,900,800,1000,Medium
+Crisis management,weather_dollar_old,Crisis,dollar,1000,900,1100,Medium
+Crisis management,weather_time_new,Crisis,number,1,1,1,Medium
+Crisis management,weather_time_old,Crisis,number,2,2,2,Medium
+Provider costs,consumables,Ongoing cost,dollar,100,80,120,High
+Provider costs,customisation,Upfront cost,dollar,1000,800,1200,High
+Provider costs,dashboard,Upfront cost,dollar,1000,800,1200,High
+Provider costs,installation,Upfront cost,dollar,1000,800,1200,High
+Provider costs,isobio_test,Upfront cost,dollar,1000,800,1200,High
+Provider costs,labelling,Upfront cost,dollar,1000,800,1200,High
+Provider costs,loggers,Upfront cost,dollar,1000,800,1200,High
+Provider costs,microsite_app,Upfront cost,dollar,1000,800,1200,High
+Provider costs,service,Ongoing cost,dollar,100,80,120,High
+Provider costs,site_visits,Upfront cost,dollar,1000,800,1200,High
+Provider costs,sol_equipment,Upfront cost,dollar,1000,800,1200,High
+Provider costs,sol_ongoing_other,Ongoing cost,dollar,100,80,120,High
+Provider costs,sol_upfront_other,Upfront cost,dollar,1000,800,1200,High
+Provider costs,subscription,Ongoing cost,dollar,100,80,120,High
+Provider costs,trace_standards,Upfront cost,dollar,1000,800,1200,High
+Provider costs,training,Upfront cost,dollar,1000,800,1200,High
+Provider costs,upgrades,Ongoing cost,dollar,100,80,120,High
+Supply chain,changeover,Upfront cost,dollar,100,80,120,High
+Supply chain,integration,Upfront cost,dollar,100,80,120,High
+Supply chain,mobile_app,Upfront cost,dollar,100,80,120,High
+Supply chain,sup_ongoing_tot,Ongoing cost,dollar,1000,800,1200,Low
+Supply chain,sup_software,Upfront cost,dollar,100,80,120,High
+Supply chain,sup_upfront_other,Upfront cost,dollar,100,80,120,High
+New revenue,add_rev_tot,Ongoing benefit,percent,4,0,6.4,Medium
+Business costs,bus_upfront_tot,Upfront cost,dollar,1000,800,1200,Low
+Cost savings,red_costs_total,Ongoing benefit,percent,3,0,4.8,Low
+Provider costs,sol_ongoing_tot,Ongoing cost,dollar,1000,800,1200,Low
+Provider costs,sol_upfront_tot,Upfront cost,dollar,10000,8000,12000,Low
+Supply chain,sup_upfront_tot,Upfront cost,dollar,1000,800,1200,Low

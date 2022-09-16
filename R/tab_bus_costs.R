@@ -21,12 +21,12 @@ tab_bus_costs <- function(...) tabPanel(
       'labellers',
       'scanners',
       'equipment',
-      'integration',
+      'bus_integration',
       'bus_software',
       'labour',
-      'training',
+      'bus_training',
       'marketing_costs',
-      'changeover',
+      'bus_changeover',
       'bus_upfront_other'
     ),
     labels = c(

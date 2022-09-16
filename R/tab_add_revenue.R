@@ -20,7 +20,7 @@ tab_add_revenue <- function(...) tabPanel(
     div(
       class = c("col-md-4", "uncertaintyContent"),
       percentRangeInput(
-        inputId = "add_rev_tot_range",
+        inputId = "add_rev_tot-range",
         label = "Increased revenue range",
         width = "100%"
       )
@@ -28,7 +28,7 @@ tab_add_revenue <- function(...) tabPanel(
     div(
       class = c("col-md-4", "uncertaintyContent"),
       radioGroupButtons(
-        inputId = "add_rev_tot_uncertainty",
+        inputId = "add_rev_tot-uncertainty",
         label = "Increased  revenue certainty",
         choices = c("High", "Medium", "Low"),
         status = "primary",
