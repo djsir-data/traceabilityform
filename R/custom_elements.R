@@ -6,8 +6,8 @@ input_row <- function(
     input_type = "percent",
     content_type = "always",
     uncertainty_label = NULL,
-    grid_size = "lg",
-    col_width = 3
+    grid_size = "md",
+    col_width = 4
 ){
 
   # Determine row classes to apply

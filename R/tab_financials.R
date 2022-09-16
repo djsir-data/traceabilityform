@@ -13,7 +13,7 @@ tab_financials <- function(...) tabPanel(
   # Inputs
   fluidRow(
     div(
-      class = "col-lg-3",
+      class = "col-md-4",
       dollarInput(
         inputId = "cur_rev",
         label = "Current annual revenue",
@@ -23,7 +23,7 @@ tab_financials <- function(...) tabPanel(
       )
     ),
     div(
-      class = c("col-lg-3", "uncertaintyContent"),
+      class = c("col-md-4", "uncertaintyContent"),
       dollarRangeInput(
         inputId = "cur_rev-range",
         label = "Annual revenue range",
@@ -31,7 +31,7 @@ tab_financials <- function(...) tabPanel(
       )
     ),
     div(
-      class = c("col-lg-3", "uncertaintyContent"),
+      class = c("col-md-4", "uncertaintyContent"),
       radioGroupButtons(
         inputId = "cur_rev-uncertainty",
         label = "Annual revenue certainty",
@@ -43,7 +43,7 @@ tab_financials <- function(...) tabPanel(
   ),
   fluidRow(
     div(
-      class = "col-lg-3",
+      class = "col-md-4",
       dollarInput(
         inputId = "cur_costs",
         label = "Current annual costs",
@@ -53,7 +53,7 @@ tab_financials <- function(...) tabPanel(
       )
     ),
     div(
-      class = c("col-lg-3", "uncertaintyContent"),
+      class = c("col-md-4", "uncertaintyContent"),
       dollarRangeInput(
         inputId = "cur_costs-range",
         label = "Annual cost range",
@@ -61,7 +61,7 @@ tab_financials <- function(...) tabPanel(
       )
     ),
     div(
-      class = c("col-lg-3", "uncertaintyContent"),
+      class = c("col-md-4", "uncertaintyContent"),
       radioGroupButtons(
         inputId = "cur_costs-uncertainty",
         label = "Annual costs certainty",
