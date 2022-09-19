@@ -63,6 +63,21 @@ $(document).ready(function () {
     var inputs = $("input:visible");
     inputs.removeClass("is-invalid");
 
+    // Double check content switch states
+    if (advancedContent.checked) {
+      $(".basicContent").show();
+      $(".advancedContent").hide();
+    } else {
+      $(".basicContent").hide();
+      $(".advancedContent").show();
+    }
+
+    if (uncertaintyContent.checked) {
+      $(".uncertaintyContent").show();
+    } else {
+      $(".uncertaintyContent").hide();
+    }
+
     var allValid = true;
     inputs.each(function (index, value) {
       allValid = allValid & ($(value).val().length > 0);

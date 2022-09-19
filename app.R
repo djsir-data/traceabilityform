@@ -196,6 +196,12 @@ server <- function(input, output, session) {
     viz_annual_benefits(input_summary(), input$discount_rate, input$eval_period)
   })
 
+  # Uncertainty histogram
+  output$uncertainty_hist <- renderHighchart({
+    df <- simulate_beta(input_set(), input$eval_period, input$discount_rate)
+    vis_uncertainty_hist(df, n_years = input$eval_period)
+  })
+
 }
 
 # Run the application

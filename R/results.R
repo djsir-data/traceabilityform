@@ -125,13 +125,19 @@ results_card <- function(roi, results, n_years, break_even_year){
   # Card text
   out_text <- if(roi >= 0){
     paste0(
-      "Results suggest traceability systems should benefit your business with ",
-      tags$b("a total ", round(roi, 1), "% discounted return on investment"),
+      "This model estimates traceability systems should benefit your business ",
+      "with ", tags$b(
+        paste0(
+          "a total ", round(roi, 1), "% discounted return on investment"
+          )
+        ),
       " (or ", returns_sign, format(round(abs(results)), big.mark = ","),
-      ") over ", n_years, " years. Inputs indicate ",
+      ") over ", n_years, " years. ",
       tags$b(
-        "your business should break even on traceability systems within ",
-        break_even_year, " year", if(break_even_year > 1){"s"}, "."
+        paste0(
+          "Your business is estimated to break even on traceability systems within ",
+          break_even_year, " year", if(break_even_year > 1){"s"}, "."
+        )
       )
     )
   } else {
@@ -139,8 +145,10 @@ results_card <- function(roi, results, n_years, break_even_year){
       "Results suggest traceability systems will not benefit your business ",
       "with ",
       tags$b(
-        "a total ", round(roi, 1), "% discounted return on investment"
-        ),
+        paste0(
+          "a total ", round(roi, 1), "% discounted return on investment"
+        )
+      ),
       " (or ", returns_sign, format(round(abs(results)), big.mark = ","),
       ") over ", n_years, " years."
     )
@@ -466,3 +474,193 @@ viz_annual_benefits <- function(
 }
 
 
+# Simulate various ROI with beta distribution
+simulate_beta <- function(input_set, n_years, discount_rate, n = 5000, seed = 1){
+
+  # Make sure discount rate is ratio
+  discount_rate <- discount_rate / 100
+
+  # ensure we're not editing the og input set
+  input_set <- copy(input_set)
+  setDT(input_set)
+
+  # Get current values
+  cur_rev   <- input_set[flow == "Current revenue", expected]
+  cur_costs <- input_set[flow == "Current costs",   expected]
+  input_set <- input_set[!(flow %in% c("Current revenue", "Current costs"))]
+
+  # Convert new revenue percent to dollar
+  input_set[
+    units == "percent" & group == "New revenue",
+    `:=`(
+      expected = expected * cur_rev / 100,
+      range_min = range_min * cur_rev / 100,
+      range_max = range_max * cur_rev / 100
+    )
+  ]
+
+  #  Convert cost saving percent to dollar
+  input_set[
+    units == "percent" & group == "Cost savings",
+    `:=`(
+      expected = expected * cur_costs / 100,
+      range_min = range_min * cur_costs / 100,
+      range_max = range_max * cur_costs / 100
+    )
+  ]
+
+  # Drop superflous variables
+  input_set[, units := NULL]
+
+  # Split dataset into crisis, uncertainty and non-uncertainty content
+  crisis    <- input_set[flow == "Crisis"]
+  uncertain <- input_set[flow != "Crisis" & is.finite(beta)]
+  certain   <- input_set[
+    flow != "Crisis" & !is.finite(beta),
+    .(group, variable, flow, expected)
+  ]
+
+  # Clean up crisis costs then separate out into certain and uncertain
+  crisis[, c("variable", "measure", "time") := tstrsplit(variable, split = "_")]
+  crisis[, c("group", "flow") := NULL]
+
+  crisis_uncertain <- crisis[is.finite(beta)]
+  crisis_certain   <- crisis[
+    !is.finite(beta),
+    .(variable, measure, expected, time)
+    ]
+
+  # Monte Carlo
+  set.seed(seed)
+
+  uncertain <- uncertain[,
+    .(
+      expected = rbeta_min_max(
+        n = n,
+        shape1 = alpha,
+        shape2 = beta,
+        min = range_min,
+        max = range_max
+      )
+      ),
+    .(group, variable, flow)
+    ]
+
+  crisis_uncertain <- crisis_uncertain[,
+    .(
+      expected = rbeta_min_max(
+        n = n,
+        shape1 = alpha,
+        shape2 = beta,
+        min = range_min,
+        max = range_max
+      )
+    ),
+    .(variable, measure, time)
+  ]
+
+
+  # Rebind data
+  crisis <- rbind(crisis_certain, crisis_uncertain, fill = TRUE)
+  input_set <- rbind(certain, uncertain, fill = TRUE)
+
+  # remove other datasets to minimise memory usage with concurrent users
+  rm(crisis_certain, crisis_uncertain, certain, uncertain)
+
+  # Summarise crisis costs
+  crisis <- crisis[,
+    .(expected = expected[measure == "dollar"] * expected[measure == "time"]),
+    .(variable, time)
+    ][,
+    .(
+      group = "Crisis management",
+      flow = ifelse(
+        expected[time == "old"] - expected[time == "new"] >= 0,
+        "Ongoing benefit",
+        "Ongoing cost"
+        ),
+      expected = expected[time == "old"] - expected[time == "new"] / 5
+      ),
+    variable
+    ]
+
+  # Add crisis costs back into main dataset
+  input_set <- rbind(input_set, crisis, fill = TRUE)
+  rm(crisis)
+
+  # Sum over flow
+  input_set <- input_set[,
+    .(expected = Reduce(`+`, split(expected, variable))),
+    flow
+  ]
+
+  # Pivot (sorry for all the higher order funs. dcast needs LHS in fun)
+  input_set <- split(input_set, by = "flow", keep.by = FALSE)
+  input_set <- lapply(input_set, `[`,  j = expected)
+  input_set <- do.call(data.table, input_set)
+
+  # Clean up names
+  setnames(input_set, tolower)
+  setnames(input_set, function(x) gsub(" ", "_", x))
+  setnames(input_set, function(x) paste0(x, "s"))
+
+  # Calculate ROI
+  input_set[,
+    `:=`(
+      returns = discount(ongoing_benefits, discount_rate, n_years) -
+        upfront_costs -
+        discount(ongoing_costs, discount_rate, n_years),
+      roi = discount(ongoing_benefits, discount_rate, n_years) /
+        (upfront_costs + discount(ongoing_costs, discount_rate, n_years)) - 1
+    )
+  ]
+
+  return(input_set)
+
+}
+
+vis_uncertainty_hist <- function(simulation_data, n_years, n_bins = 30){
+
+  df_hist <- hist(simulation_data$roi, breaks = n_bins)
+  df_hist <- data.table(
+    x = head(df_hist$breaks, -1),
+    y = df_hist$density,
+    tip = paste0(
+      round(rev(cumsum(rev(df_hist$counts)) / sum(df_hist$counts)) * 100, 1),
+      "% chance of >",
+      head(df_hist$breaks, -1),
+      "% discounted return on investment"
+      )
+    )
+
+  hchart(
+    df_hist,
+    "area",
+    hcaes(x = x, y = y),
+    pointPadding = 0,
+    borderWidth =  0,
+    groupPadding = 0,
+    shadow = FALSE,
+    color = "#00573F"
+  ) %>%
+    hc_yAxis(visible = FALSE) %>%
+    hc_tooltip(
+      useHTML = TRUE,
+      formatter = JS(
+        "
+        function(){
+        return this.point.tip;
+        }
+        ")
+    ) %>%
+    ag_chart() %>%
+    hc_xAxis(
+      tickLength = 0,
+      title = list(text = "Return on investment"),
+      labels = list(
+        format = "{text}%"
+      )
+    )
+
+
+}

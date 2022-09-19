@@ -23,6 +23,20 @@ tab_results <- function(...) tabPanel(
       class = "col-md-6",
       uiOutput("table_summary")
     )
+  ),
+
+  # Uncertainty content
+  h3("Probably of positive returns"),
+  div(
+    class = "row g-5",
+    div(
+      class = "col-md-6",
+      highchartOutput("uncertainty_hist")
+    ),
+    div(
+      class = "col-md-6",
+      p("SOme text")
+    )
   )
 )
 

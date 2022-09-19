@@ -72,3 +72,13 @@ ag_chart <- function(hc){
   )
 
 }
+
+
+hc_axis_label_dollars <- JS(
+  "
+  function(){
+    const sign = (this.value < 0 ? '-' : '');
+    return sign + '$'+ Highcharts.numberFormat(Math.abs(this.value), 0);
+  }
+  "
+)
