@@ -14,7 +14,7 @@ tab_results <- function(...) tabPanel(
 
   # Summary table
   div(
-    class = "row g-5",
+    class = "row",
     div(
       class = "col-md-6",
       div(
@@ -46,9 +46,12 @@ tab_results <- function(...) tabPanel(
   ),
 
   # Uncertainty content
-  h3("Probably of positive returns"),
+  h3(
+    class = "pt-5 pb-2",
+    "Probably of positive returns"
+    ),
   div(
-    class = "row g-5",
+    class = "row",
     div(
       class = "col-md-6",
       div(
