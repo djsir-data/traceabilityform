@@ -93,17 +93,27 @@ summ_input_set <- function(input_set){
   # Drop superflous variables
   input_set[, c("variable", "units") := NULL]
 
-  # Collapse crisis costs
-  crisis[, c("variable", "measure", "time") := tstrsplit(variable, split = "_")]
-  crisis <- dcast(crisis, variable + measure ~ time, value.var = "expected")
-  crisis <- crisis[, .(new = prod(new), old = prod(old)), variable]
-  crisis <- crisis[,
-    .(
-      group = "Crisis management",
-      flow = ifelse(sum(old - new) >= 0, "Ongoing benefit", "Ongoing cost"),
-      expected = abs(sum(old - new)) / 5
-    )
-  ]
+  # Separate out crisis dimensions
+  crisis[, c("variable", "measure", "period") := tstrsplit(variable, split = "_")]
+  crisis[, c("group", "flow") := NULL]
+
+  # Summarise crisis costs by multiplying dollar costs by expected occurrences
+  crisis <- crisis[, split(expected, measure), .(variable, period)]
+  crisis[, expected := dollar * time]
+  crisis[, c("dollar", "time") := NULL]
+
+  # Summarise crisis costs by differencing old and new expenses
+  crisis <- crisis[, split(expected, period), variable]
+  crisis[, expected := old - new]
+  crisis[, c("old", "new") := NULL]
+
+  # Add flow and group back to crisis + divide by five years (input is per five years)
+  crisis[, `:=`(group = "Crisis management", flow = ifelse(
+    expected >= 0,
+    "Ongoing benefit",
+    "Ongoing cost"
+  ))]
+  crisis[, expected := abs(expected) / 5]
 
   # Bind crisis back in
   input_set <- rbindlist(list(input_set, crisis), fill = TRUE)
@@ -470,6 +480,17 @@ viz_annual_benefits <- function(
       valuePrefix = chart_prefix,
       valueSuffix = chart_suffix,
       valueDecimals = 2
+    ) %>%
+    hc_chart(
+      events = list(
+        load = JS(
+          "
+          function(){
+            this.setSize(null,null);
+          }
+          "
+        )
+      )
     )
 }
 
@@ -521,13 +542,13 @@ simulate_beta <- function(input_set, n_years, discount_rate, n = 5000, seed = 1)
   ]
 
   # Clean up crisis costs then separate out into certain and uncertain
-  crisis[, c("variable", "measure", "time") := tstrsplit(variable, split = "_")]
+  crisis[, c("variable", "measure", "period") := tstrsplit(variable, split = "_")]
   crisis[, c("group", "flow") := NULL]
 
   crisis_uncertain <- crisis[is.finite(beta)]
   crisis_certain   <- crisis[
     !is.finite(beta),
-    .(variable, measure, expected, time)
+    .(variable, measure, expected, period)
     ]
 
   # Monte Carlo
@@ -556,7 +577,7 @@ simulate_beta <- function(input_set, n_years, discount_rate, n = 5000, seed = 1)
         max = range_max
       )
     ),
-    .(variable, measure, time)
+    .(variable, measure, period)
   ]
 
 
@@ -567,22 +588,19 @@ simulate_beta <- function(input_set, n_years, discount_rate, n = 5000, seed = 1)
   # remove other datasets to minimise memory usage with concurrent users
   rm(crisis_certain, crisis_uncertain, certain, uncertain)
 
-  # Summarise crisis costs
-  crisis <- crisis[,
-    .(expected = expected[measure == "dollar"] * expected[measure == "time"]),
-    .(variable, time)
-    ][,
-    .(
-      group = "Crisis management",
-      flow = ifelse(
-        expected[time == "old"] - expected[time == "new"] >= 0,
-        "Ongoing benefit",
-        "Ongoing cost"
-        ),
-      expected = expected[time == "old"] - expected[time == "new"] / 5
-      ),
-    variable
-    ]
+  # Summarise crisis costs by multiplying dollar costs by expected occurrences
+  crisis <- crisis[, split(expected, measure), .(variable, period)]
+  crisis[, expected := dollar * time]
+  crisis[, c("dollar", "time") := NULL]
+
+  # Summarise crisis costs by differencing old and new expenses
+  crisis <- crisis[, split(expected, period), variable]
+  crisis[, expected := old - new]
+  crisis[, c("old", "new") := NULL]
+
+  # Add flow and group back to crisis + divide by five years (input is per five years)
+  crisis[, `:=`(group = "Crisis management", flow =  "crisis")]
+  crisis[, expected := expected / 5]
 
   # Add crisis costs back into main dataset
   input_set <- rbind(input_set, crisis, fill = TRUE)
@@ -594,10 +612,26 @@ simulate_beta <- function(input_set, n_years, discount_rate, n = 5000, seed = 1)
     flow
   ]
 
-  # Pivot (sorry for all the higher order funs. dcast needs LHS in fun)
-  input_set <- split(input_set, by = "flow", keep.by = FALSE)
-  input_set <- lapply(input_set, `[`,  j = expected)
-  input_set <- do.call(data.table, input_set)
+  # Pivot
+  input_set <- input_set[, split(expected, flow)]
+
+  # Add crisis to either benefits or costs depending on value
+  input_set[,
+    `:=`(
+      `Ongoing benefit` = ifelse(
+        test = crisis >= 0,
+        yes  = `Ongoing benefit` + crisis,
+        no   = `Ongoing benefit`
+        ),
+      `Ongoing cost` = ifelse(
+        test = crisis >= 0,
+        yes  = `Ongoing cost`,
+        no   = `Ongoing cost`+ abs(crisis)
+      )
+    )
+  ]
+
+  input_set[, crisis := NULL]
 
   # Clean up names
   setnames(input_set, tolower)
@@ -619,9 +653,9 @@ simulate_beta <- function(input_set, n_years, discount_rate, n = 5000, seed = 1)
 
 }
 
-vis_uncertainty_hist <- function(simulation_data, n_years, n_bins = 30){
+vis_uncertainty_hist <- function(simulation_data, n_years, breaks = "Sturges"){
 
-  df_hist <- hist(simulation_data$roi, breaks = n_bins)
+  df_hist <- hist(simulation_data$roi, breaks = breaks)
   df_hist <- data.table(
     x = head(df_hist$breaks, -1),
     y = df_hist$density,
@@ -629,7 +663,9 @@ vis_uncertainty_hist <- function(simulation_data, n_years, n_bins = 30){
       round(rev(cumsum(rev(df_hist$counts)) / sum(df_hist$counts)) * 100, 1),
       "% chance of >",
       head(df_hist$breaks, -1),
-      "% discounted return on investment"
+      "% discounted return on investment in ",
+      n_years,
+      " years"
       )
     )
 
@@ -655,6 +691,12 @@ vis_uncertainty_hist <- function(simulation_data, n_years, n_bins = 30){
     ) %>%
     ag_chart() %>%
     hc_xAxis(
+      plotLines = list(
+        list(
+          dashStyle = "Dash",
+          value = 0
+        )
+      ),
       tickLength = 0,
       title = list(text = "Return on investment"),
       labels = list(
@@ -663,4 +705,62 @@ vis_uncertainty_hist <- function(simulation_data, n_years, n_bins = 30){
     )
 
 
+}
+
+
+viz_placeholder_hist <- function(...){
+
+  df <- data.frame(
+    x = seq(-10, 10, by = .1),
+    y = dnorm(seq(-10, 10, by = .1), mean = 5, sd = 3)
+  )
+
+  hchart(df, "area", hcaes(x, y), color = "#00573F") %>%
+    hc_plotOptions(
+      series = list(
+        opacity = 0.35,
+        enableMouseTracking = FALSE,
+        states = list(
+          inactive = list(
+            opacity = 1
+          )
+        )
+      )
+    ) %>%
+    hc_yAxis(
+      visible = FALSE
+    ) %>%
+    ag_chart() %>%
+    hc_xAxis(
+      tickLength = 0,
+      title = list(enabled = FALSE),
+      plotLines = list(
+        list(
+          dashStyle = "Dash",
+          value = 0
+        )
+      ),
+      labels = list(
+        enabled = FALSE
+      )
+    ) %>%
+    hc_annotations(
+      list(
+        draggable = "",
+        labels = list(
+          list(
+            backgroundColor = "#FFFFFF80",
+            borderColor = "#FFFFFF00",
+            shape = 'rect',
+            point = list(x = 0, y = 0.07, xAxis = 0, yAxis = 0),
+            text = "<b>Use the uncertainty switch to estimate</br>probability of positive returns</b>",
+            style = list(
+              `font-size` = "3rem",
+              color = "#000000",
+              `text-align` = "center"
+              )
+            )
+        )
+      )
+    )
 }

@@ -5,6 +5,9 @@ library(bslib)
 library(shinyWidgets)
 library(highcharter)
 
+# DEV Development packages
+library(shinyjs)
+
 
 # Get functions from R directory
 lapply(
@@ -51,7 +54,10 @@ ui <- navbarPage(
     # Head items (stylesheets and scripts)
     tags$head(
       tags$link(rel = "stylesheet", type = "text/css", href = "agvic.css"),
-      tags$script(src = "navigation_validation.js")
+      tags$script(src = "navigation_validation.js"),
+      # tags$script(src = "height_sync.js"),
+      # DEV
+      useShinyjs()
     ),
     # Advanced switch
     column(
@@ -94,11 +100,15 @@ server <- function(input, output, session) {
 
   # DEV feature
   observeEvent(input$dev_prefill, {
-    prefill_values(FALSE, input, output, session)
+    if(input$switch_advanced) shinyjs::click("switch_advanced")
+    if(input$switch_uncertainty) shinyjs::click("switch_uncertainty")
+    prefill_values(input, output, session)
   })
 
   observeEvent(input$dev_prefill_uncertainty, {
-    prefill_values(TRUE, input, output, session)
+    if(!input$switch_advanced) shinyjs::click("switch_advanced")
+    if(!input$switch_uncertainty) shinyjs::click("switch_uncertainty")
+    prefill_values(input, output, session)
   })
 
   # Get input metadata
@@ -198,8 +208,18 @@ server <- function(input, output, session) {
 
   # Uncertainty histogram
   output$uncertainty_hist <- renderHighchart({
-    df <- simulate_beta(input_set(), input$eval_period, input$discount_rate)
-    vis_uncertainty_hist(df, n_years = input$eval_period)
+
+    df <- input_set()
+
+    if("beta" %in% names(df)){
+      df <- simulate_beta(input_set(), input$eval_period, input$discount_rate)
+      out <- vis_uncertainty_hist(df, n_years = input$eval_period)
+    } else {
+      out <- viz_placeholder_hist()
+    }
+
+    out
+
   })
 
 }

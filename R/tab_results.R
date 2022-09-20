@@ -17,7 +17,7 @@ tab_results <- function(...) tabPanel(
     class = "row g-5",
     div(
       class = "col-md-6",
-      highchartOutput("annual_chart", height = "550px")
+      highchartOutput("annual_chart", height = "100%")
     ),
     div(
       class = "col-md-6",

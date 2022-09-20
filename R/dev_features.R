@@ -1,8 +1,4 @@
-prefill_values <- function(advanced = TRUE, input, output, session){
-
-  # Activate switches
-  updateMaterialSwitch(session, "switch_advanced", advanced)
-  updateMaterialSwitch(session, "switch_uncertainty", advanced)
+prefill_values <- function(input, output, session){
 
   # Update values based on dummy dataset
   dummy <- fread("data-raw/dummy_inputs.csv")
