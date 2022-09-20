@@ -17,11 +17,31 @@ tab_results <- function(...) tabPanel(
     class = "row g-5",
     div(
       class = "col-md-6",
-      highchartOutput("annual_chart", height = "100%")
+      div(
+        class = "card h-100",
+        div(
+          class = "card-header",
+          tags$b("Expected return on investment by year")
+        ),
+        div(
+          class = "card-body h-100",
+          highchartOutput("annual_chart", height = "100%")
+        )
+      )
     ),
     div(
       class = "col-md-6",
-      uiOutput("table_summary")
+      div(
+        class = "card h-100",
+        div(
+          class = "card-header",
+          tags$b("Cost/benefit breakdown")
+        ),
+        div(
+          class = "card-body h-100",
+          uiOutput("table_summary")
+        )
+      )
     )
   ),
 
@@ -31,11 +51,31 @@ tab_results <- function(...) tabPanel(
     class = "row g-5",
     div(
       class = "col-md-6",
-      highchartOutput("uncertainty_hist")
+      div(
+        class = "card h-100",
+        div(
+          class = "card-header",
+          tags$b("Simulated return on investment distribution")
+        ),
+        div(
+          class = "card-body h-100",
+          highchartOutput("uncertainty_hist")
+        )
+      )
     ),
     div(
       class = "col-md-6",
-      p("SOme text")
+      div(
+        class = "card h-100",
+        div(
+          class = "card-header",
+          tags$b("To be filled")
+        ),
+        div(
+          class = "card-body h-100",
+          p("some text")
+        )
+      )
     )
   )
 )
