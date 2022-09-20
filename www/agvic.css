@@ -63,24 +63,6 @@
   padding: 15px;
 }
 
-.swal2-icon.swal2-error{
-  color: var(--bs-error) !important;
-}
-
-.swal2-html-container{
-  font-family: VIC-Regular !important;
-  font-size: 1.1rem !important;
-}
-
-.swal2-title{
-  font-family: VIC-Bold !important;
-  font-size: 1.2rem !important;
-}
-
-.swal2-styled.swal2-confirm{
-  background-color: var(--bs-info) !important;
-  font-size: 1.1rem !important;
-}
 
 .material-switch>label:after, .material-switch>label:before{
   margin-top: -13px;
@@ -90,6 +72,3 @@
   top: calc((0% - (100% - 1em)) - 9%);
 }
 
-.highchart.html-widget.html-widget-output{
-  overflow: visible !important;
-}
