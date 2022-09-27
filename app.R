@@ -202,18 +202,46 @@ server <- function(input, output, session) {
   })
 
   # Annual chart
-  output$annual_chart <- renderHighchart({
+  annual_chart <- reactive({
     viz_annual_benefits(input_summary(), input$discount_rate, input$eval_period)
   })
 
+  output$annual_chart <- renderHighchart(annual_chart())
+
   # Uncertainty histogram
+  simulation_data <- reactive(
+    if("beta" %in% names(input_set())){
+      simulate_beta(input_set(), input$eval_period, input$discount_rate)
+    } else {
+      NULL
+    }
+  )
+
   output$uncertainty_hist <- renderHighchart({
 
     df <- input_set()
 
     if("beta" %in% names(df)){
-      df <- simulate_beta(input_set(), input$eval_period, input$discount_rate)
-      out <- vis_uncertainty_hist(df, n_years = input$eval_period)
+      .GlobalEnv$test_simulation_data <- simulation_data()
+      .GlobalEnv$test_params <- list(
+        business_name = if(!is.null(input$bus_name) & input$bus_name != ""){
+          input$bus_name
+        } else {
+          NULL
+        },
+        input_summary = input_summary(),
+        input_set = input_set(),
+        simulation_data = simulation_data(),
+        ongoing_benefits = ongoing_benefits(),
+        ongoing_costs = ongoing_costs(),
+        upfront_costs = upfront_costs(),
+        roi = roi(),
+        returns = returns(),
+        break_even_year = break_even_year(),
+        discount_rate = input$discount_rate,
+        n_years = input$eval_period
+      )
+      out <- vis_uncertainty_hist(simulation_data(), n_years = input$eval_period)
     } else {
       out <- viz_placeholder_hist()
     }
@@ -221,6 +249,42 @@ server <- function(input, output, session) {
     out
 
   })
+
+  # Report download
+  output$report <- downloadHandler(
+    filename = "traceability_cost_benefit.pdf",
+    contentType = "application/pdf",
+    content = function(file){
+
+      # Ensure template is in editable location
+      temp_location <- tempdir()
+      file.copy("report", temp_location, overwrite = TRUE, recursive = TRUE)
+
+      # Generate report
+      rmarkdown::render(
+        file.path(temp_location, "report", "report_template.Rmd"),
+        output_file = file,
+        params = list(
+          business_name = if(!is.null(input$bus_name) & input$bus_name != ""){
+            input$bus_name
+          } else {
+            NULL
+          },
+          input_summary = input_summary(),
+          input_set = input_set(),
+          simulation_data = simulation_data(),
+          ongoing_benefits = ongoing_benefits(),
+          ongoing_costs = ongoing_costs(),
+          upfront_costs = upfront_costs(),
+          roi = roi(),
+          returns = returns(),
+          break_even_year = break_even_year(),
+          discount_rate = input$discount_rate,
+          n_years = input$eval_period
+        )
+        )
+    }
+  )
 
 }
 

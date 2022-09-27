@@ -1,0 +1,11 @@
+name: traceability
+title:
+username:
+account: djpr-spp
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 6803071
+bundleId: 6280507
+url: https://djpr-spp.shinyapps.io/traceability/
+when: 1662616743.9623
+lastSyncTime: 1662616743.9623

@@ -189,7 +189,7 @@ results_card <- function(roi, results, n_years, break_even_year){
   # out
   return(
     div(
-      class = "card",
+      class = "card h-100",
       div(
         class = header_class,
         out_icon,

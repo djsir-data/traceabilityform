@@ -5,10 +5,47 @@ tab_results <- function(...) tabPanel(
 
   h2('Results'),
   div(
-    class = "row",
+    class = "row  py-4",
     div(
-      class = "col py-4",
-      uiOutput("results_card")
+      class = "col-md-7",
+      uiOutput("results_card") %>%
+        tagAppendAttributes(class = "h-100")
+    ),
+    div(
+      class = "col-md-5 h-100",
+      div(
+        class = "card",
+        div(
+          class = "card-header",
+          tags$b("Download results")
+        ),
+        div(
+          class = "card-body",
+          fluidRow(
+            column(
+              12,
+              "Click below to download results as PDF report. You can",
+              "optionally add your business name to customise the report.",
+              textInput(
+                inputId = "bus_name",
+                label = NULL,
+                placeholder = "Business name (optional)",
+                width = "100%"
+              ) %>%
+                tagAppendAttributes(
+                  style = "padding-bottom: 0; margin-bottom: 0; margin-top: 1rem;"
+                )
+            )
+          )
+        ),
+        div(
+          class = "card-footer float-end",
+          downloadButton("report", "Download report") %>%
+            tagAppendAttributes(
+              class = "float-end"
+            )
+        )
+      )
     )
   ),
 

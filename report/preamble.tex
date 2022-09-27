@@ -1,0 +1,27 @@
+\AtBeginDocument{\let\maketitle\relax}
+
+\usepackage{xcolor}
+\usepackage{fontspec}
+\usepackage{eso-pic}
+\usepackage{graphicx}
+\usepackage{varwidth}
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{float}
+
+\setmainfont{[VIC-Regular.ttf]}
+
+\newcommand\BackgroundPic{%
+\put(0,0){%
+\parbox[b][\paperheight]{\paperwidth}{%
+\vfill
+\centering
+\includegraphics[width=\paperwidth,height=\paperheight]{title_background.png}%
+\vfill
+}}}
+
+\AddToShipoutPictureBG{%
+  \AtPageUpperLeft{%
+    \raisebox{-\height}{\includegraphics[width=\paperwidth]{header_graphic.png}}
+  }
+}

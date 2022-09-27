@@ -1,0 +1,290 @@
+---
+title: "Traceability Cost Benefit Analysis"
+author: "Department of Jobs, Precincts and Regions"
+date: "`r Sys.Date()`"
+output: 
+  pdf_document: 
+    latex_engine: xelatex
+    includes:
+      in_header: "preamble.tex"
+papersize: a4
+urlcolor: blue
+linkcolor: black
+params: 
+  business_name: NULL
+  input_set: NULL
+  input_summary: NULL
+  simulation_data: NULL
+  ongoing_benefits: NULL
+  ongoing_costs: NULL
+  upfront_costs: NULL
+  roi: NULL
+  returns: NULL
+  break_even_year: NULL
+  discount_rate: NULL
+  n_years: NULL
+---
+```{r setup, include=FALSE}
+# Load libraries
+library(data.table)
+library(shiny)
+library(ggplot2)
+library(knitr)
+library(patchwork)
+
+# Options
+options(knitr.kable.NA = "")
+options(scipen = 9999)
+knitr::opts_chunk$set(fig.pos = "H", out.extra = "")
+
+# Discount rate and years 
+discount_rate <- params$discount_rate / 100
+n_years <- params$n_years
+
+
+# Title and subtitle
+title <- if(is.null(params$business_name)){
+  "Traceability cost-benefit analysis"
+} else {
+  params$business_name
+}
+
+subtitle <- if(is.null(params$business_name)){
+  ""
+} else {
+  "Traceability cost-benefit analysis"
+}
+
+```
+
+<!-- title page -->
+\begin{titlepage}
+\AddToShipoutPicture*{\BackgroundPic}
+  \begin{flushright}
+    \begin{varwidth}{3.3in}
+      \begin{flushright}
+        \color{white}
+        \vspace*{6cm}
+        {\Huge\textbf{`r title`}}
+        \linebreak
+        \linebreak
+        {\large \textbf{`r subtitle`}}
+        \linebreak
+        \linebreak
+        \textbf{`r format(Sys.Date(), "%d %B %Y")`}
+        \vfill
+      \end{flushright}
+    \end{varwidth}
+  \end{flushright}
+\end{titlepage}
+
+<!-- TOC & Disclaimer page -->
+\newpage
+\pagenumbering{gobble}
+\topskip0pt
+\vspace*{\fill}
+\tableofcontents
+\vspace*{\fill}
+\copyright \enspace Department of Jobs, Precincts and Regions, 
+`r format(Sys.Date(), "%Y")`
+\newline
+\newline
+The content of this Victorian Government report is provided for information purposes only. No claim is made as to the accuracy or currency of any of the content in this report at any time. The Victorian Government and this agency (the Department of Jobs, Precincts and Regions) do not accept any liability to any person for the information (or the use of such information) which is provided on this report, including information sourced or derived from third parties or incorporated into the report by reference.
+\newpage
+\pagenumbering{arabic}
+
+# Preface
+This automated report provides summary information from [Agriculture Victoria's 
+traceability system cost-benefit tool](https://djpr-spp.shinyapps.io/traceability/). 
+All information contained in this report reflects summarised inputs provided by users or 
+transformations of those inputs as detailed in the methodology section. 
+
+For more information on traceability systems and how they might benefit your business,
+see the [Agriculture Victoria traceability page](https://agriculture.vic.gov.au/export/traceability).
+
+# Results
+```{r results_text, message=FALSE, warning=FALSE, include=FALSE}
+
+returns_sign <- if(params$returns < 0 ) "-$" else "$"
+
+result_text <- if(params$roi >= 0){
+    paste0(
+      "This cost-benefit analyis estimates traceability systems should benefit your business ",
+      "with a total ",  round(params$roi, 1), "% discounted return on investment",
+      " (or ", returns_sign, format(round(abs(params$returns)), big.mark = ","),
+      ") over ", params$n_years, " years. "
+    )
+  } else {
+    paste0(
+      "Results suggest traceability systems will not benefit your business ",
+      "with a total ", round(params$roi, 1), "% discounted return on investment",
+      " (or ", returns_sign, format(round(abs(params$returns)), big.mark = ","),
+      ") over ", params$n_years, " years."
+    )
+  }
+
+yearly_text <- if(params$roi >= 0){
+  paste0(
+    "Your business is estimated to break even on traceability systems within ",
+    params$break_even_year, " year", if(params$break_even_year > 1){"s"}, "."
+  )
+} else{
+  paste0(
+    "This cost-benefit analysis does not expect your business to break even within",
+    params$break_even_year, " year", if(params$break_even_year > 1){"s"}, "."
+  )
+}
+```
+`r result_text` Table 1 provides a full breakdown of initial costs,
+ongoing benefits and ongoing costs.
+```{r summary, echo=FALSE}
+# Manipulate summary table
+summ_tab <- copy(params$input_summary)
+setDT(summ_tab)
+
+summ_tab[, flow := ifelse(
+  flow == "Upfront cost",
+  flow,
+  paste(flow, "(per annum)")
+)
+]
+
+summ_tab[, flow := factor(
+  flow, 
+  levels = c("Upfront cost", "Ongoing benefit (per annum)", "Ongoing cost (per annum)")
+  )
+]
+setkey(summ_tab, flow)
+
+summ_tab[, value := format(value, big.mark = ',', justify = "none")]
+summ_tab[, value := gsub(" ", "", value)]
+summ_tab[, value := ifelse(
+  flow == "Ongoing benefit (per annum)", 
+  paste0("+$", value),
+  paste0("-$", value)
+  )
+]
+summ_tab[, flow := c(flow[1], rep(NA, .N - 1)), flow]
+
+kable(
+  summ_tab, 
+  caption = "Summary of costs and benefits", 
+  col.names = c("Cost/benefit", "Category", "Value"),
+  format = "latex",
+  position = "H",
+  align = "llr",
+  vline = "",
+  booktabs = T
+)
+
+```
+
+`r yearly_text` Figure 1 shows how overall expected discounted return on 
+investment will change each year.
+
+```{r annual_calcs, echo=FALSE, message=FALSE, warning=FALSE, fig.cap="Returns by year", fig.height=5}
+roi_v <- 
+  discount_v(params$ongoing_benefits, discount_rate, n_years) /
+  (
+    params$upfront_costs + 
+      discount_v(params$ongoing_costs, discount_rate, n_years)
+    ) - 1
+
+returns_v <- 
+  discount_v(params$ongoing_benefits, discount_rate, n_years) -
+  (
+    params$upfront_costs + 
+      discount_v(params$ongoing_costs, discount_rate, n_years)
+    )
+
+df_roi <- data.frame(
+  roi = roi_v,
+  years  = seq_len(n_years)
+)
+
+df_returns <- data.frame(
+  return = returns_v,
+  years  = seq_len(n_years)
+)
+
+a <- ggplot(df_roi, aes(years, roi)) +
+  geom_line() +
+  xlab(NULL) +
+  ylab("Discounted return\non investment (%)") +
+  scale_x_continuous(labels = function(x) paste("Year", x)) +
+  theme_bw() +
+  theme(text = element_text(size = unit(12, "pt")))
+
+b <- ggplot(df_returns, aes(years, return)) +
+  geom_line() +
+  xlab(NULL) +
+  ylab("Discounted returns ($)") +
+  scale_x_continuous(labels = function(x) paste("Year", x)) +
+  theme_bw() +
+  theme(text = element_text(size = unit(12, "pt")))
+
+a / b 
+```
+
+
+# Probability of positive returns
+```{R uncertainty, include=FALSE}
+has_uncertainty <- "beta" %in% names(params$input_set)
+
+if(has_uncertainty){
+  
+  roi_dist <- params$simulation_data$roi
+  roi_prob <- round(sum(roi_dist > 0) * 100 / length(roi_dist))
+  
+  uncertainty_text <- fcase(
+    all(roi_dist == 0), "All 5000 simulation runs returned 0% discounted return on investment.",
+    all(roi_dist >= 0), "All 5000 simulation runs returned a positive discounted return on investment, suggesting a very high likelyhood of positive returns.",
+    all(roi_dist <= 0), "All 5000 simulation runs returned a negative discounted return on investment, suggesting a very high likelyhood of negative returns.",
+    roi_prob >= 75, paste0(roi_prob, "% of 5000 simulation runs returned a positive discounted return on investment, suggesting a good chance of positive return on investment."),
+    roi_prob <= 25, paste0(roi_prob, "% of 5000 simulation runs returned a positive discounted return on investment, suggesting a poor chance of positive return on investment."),
+    TRUE, paste0(roi_prob, "% of 5000 simulation runs returned a positive discounted return on investment.")
+ )
+}
+```
+
+`r if(has_uncertainty){uncertainty_text} else {"Uncertainty content was not completeted for this cost benefit analysis. To estimate probablity of prositive returns, please complete use the [online tool](https://djpr-spp.shinyapps.io/traceability/) with certainty switched on."}`
+`r if(has_uncertainty){"Figure 2 shows a histogram of all simulation runs and expected discounted return on investment. Taller columns represent more likely outcomes."}`
+
+```{r roi_histogram, echo=FALSE, fig.cap="Histogram of simulated return on investment", message=FALSE, warning=FALSE}
+
+if(has_uncertainty){
+  ggplot() +
+  geom_histogram(aes(x = roi_dist)) +
+  xlab("Discounted return on investment (%)") +
+  ylab("Count of simulation outcomes") +
+  theme_bw() +
+  theme(text = element_text(size = unit(12, "pt")))
+}
+```
+
+# Inputs 
+Table 2 provides a copy of all inputs in the cost-benefit analysis. These inputs are provided for reference purposes. If uncertainty content was completed as part of the cost-benefit analysis, this table will also include the alpha and beta shape parameters for probability distributions as detailed in the methodology section. 
+```{R inputs, echo=FALSE}
+df <- copy(params$input_set)
+setDT(df)
+
+df[, c("alpha", "beta", "units", "flow") := NULL]
+
+column_names <- gsub("_", " ", colnames(df))
+column_names <- tools::toTitleCase(column_names)
+
+kable(
+  df,
+  caption = "Inputs provided to the cost-benefit analysis", 
+  col.names = column_names,
+  format = "latex",
+  vline = "",
+  position = "H",
+  format.args = list(big.mark = ",", scientific = FALSE),
+  booktabs = T,
+  longtable = TRUE
+)
+```
+
+# Methodology
+
