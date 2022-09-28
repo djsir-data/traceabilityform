@@ -793,9 +793,9 @@ uncertainty_card <- function(simulation_data){
     all(roi_dist == 0), "Something doesn't look right...",
     all(roi_dist >= 0), "Very high probability of positive returns",
     all(roi_dist <= 0), "Very high probability of negative returns",
-    roi_prob >= 70, paste0(roi_prob, "High probability of positive returns"),
-    roi_prob <= 30, paste0(roi_prob, "High probability of negative returns"),
-    TRUE, paste0(roi_prob, "Moderate probability of positive returns")
+    roi_prob >= 70, "High probability of positive returns",
+    roi_prob <= 30, "High probability of negative returns",
+    TRUE, "Moderate probability of positive returns"
   )
 
   uncertainty_header_class <- fcase(
