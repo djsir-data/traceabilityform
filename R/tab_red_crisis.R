@@ -3,7 +3,12 @@ tab_red_crisis <- function(...) tabPanel(
   value = 'red_crisis',
   h2('Reduced crisis costs'),
   p(
-    "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
+    "This page estimates how traceability may help in various crisis",
+    "situations, including lawsuits, recalls, biosecurity emergencies and ",
+    "natural disasters. For each category of crisis, this page will ask for",
+    "how many times you expect a crisis to occur",
+    tags$strong(class = "text-decoration-underline", "over a five year period"),
+    "and how much you expect each crisis to cost your business in dollars."
   ),
   h3("Claims/lawsuits"),
   input_row("claims_dollar_old", "Current claim cost", "dollar", "always"),

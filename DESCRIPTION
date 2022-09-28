@@ -14,11 +14,14 @@ RoxygenNote: 7.1.2
 Imports: 
     bslib,
     data.table,
+    ggplot2,
     highcharter,
     knitr,
     patchwork,
     rmarkdown,
     shiny,
+    shinyjs,
     shinyWidgets
 Suggests: 
+    pkgload,
     readrba

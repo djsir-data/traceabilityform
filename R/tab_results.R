@@ -90,7 +90,7 @@ tab_results <- function(...) tabPanel(
   div(
     class = "row",
     div(
-      class = "col-md-6",
+      class = "col-md-8",
       div(
         class = "card h-100",
         div(
@@ -104,18 +104,9 @@ tab_results <- function(...) tabPanel(
       )
     ),
     div(
-      class = "col-md-6",
-      div(
-        class = "card h-100",
-        div(
-          class = "card-header",
-          tags$b("To be filled")
-        ),
-        div(
-          class = "card-body h-100",
-          p("some text")
-        )
-      )
+      class = "col-md-4",
+      uiOutput("uncertainty_card") %>%
+        tagAppendAttributes(class = "h-100")
     )
   )
 )

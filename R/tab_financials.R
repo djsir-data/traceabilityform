@@ -7,7 +7,13 @@ tab_financials <- function(...) tabPanel(
 
   # Some text
   p(
-    "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
+    "Please enter your current annual revenue and total costs below. This",
+    "information is used to calculate the dollar value of percentage revenue",
+    "increases or percentage cost decreases.",
+    tags$strong(
+      "This information will not be saved and is deleted after your session",
+      "ends."
+    )
   ),
 
   # Inputs

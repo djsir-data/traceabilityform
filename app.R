@@ -1,19 +1,5 @@
-# Packages
-library(data.table)
-library(shiny)
-library(bslib)
-library(shinyWidgets)
-library(highcharter)
-
-# DEV Development packages
-library(shinyjs)
-
-
-# Get functions from R directory
-lapply(
-  list.files("./R", ".R|.r", full.names = TRUE),
-  source
-)
+# load all packages
+pkgload::load_all()
 
 
 ui <- navbarPage(
@@ -39,8 +25,8 @@ ui <- navbarPage(
   # fluid = FALSE,
   collapsible = TRUE,
   lang = "en",
-  theme = bs_theme_update(
-    bs_theme(bootswatch = "flatly", version = 5),
+  theme = bslib::bs_theme_update(
+    bslib::bs_theme(bootswatch = "flatly", version = 5),
     primary = "#67823A",
     secondary = "#53565A",
     success = "#759157",
@@ -57,7 +43,7 @@ ui <- navbarPage(
       tags$script(src = "navigation_validation.js"),
       # tags$script(src = "height_sync.js"),
       # DEV
-      useShinyjs()
+      shinyjs::useShinyjs()
     ),
     # Advanced switch
     column(
@@ -208,7 +194,7 @@ server <- function(input, output, session) {
 
   output$annual_chart <- renderHighchart(annual_chart())
 
-  # Uncertainty histogram
+  # Monte carlo data
   simulation_data <- reactive(
     if("beta" %in% names(input_set())){
       simulate_beta(input_set(), input$eval_period, input$discount_rate)
@@ -217,6 +203,7 @@ server <- function(input, output, session) {
     }
   )
 
+  # Uncertainty histogram
   output$uncertainty_hist <- renderHighchart({
 
     df <- input_set()
@@ -248,6 +235,11 @@ server <- function(input, output, session) {
 
     out
 
+  })
+
+  # Uncertainty card
+  output$uncertainty_card <- renderUI({
+    uncertainty_card(simulation_data())
   })
 
   # Report download

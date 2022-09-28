@@ -74,7 +74,7 @@ ag_chart <- function(hc){
 }
 
 
-hc_axis_label_dollars <- JS(
+hc_axis_label_dollars <- highcharter::JS(
   "
   function(){
     const sign = (this.value < 0 ? '-' : '');

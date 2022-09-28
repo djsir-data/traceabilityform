@@ -483,7 +483,7 @@ viz_annual_benefits <- function(
     ) %>%
     hc_chart(
       events = list(
-        load = JS(
+        load = highcharter::JS(
           "
           function(){
             this.setSize(null,null);
@@ -682,7 +682,7 @@ vis_uncertainty_hist <- function(simulation_data, n_years, breaks = "Sturges"){
     hc_yAxis(visible = FALSE) %>%
     hc_tooltip(
       useHTML = TRUE,
-      formatter = JS(
+      formatter = highcharter::JS(
         "
         function(){
         return this.point.tip;
@@ -764,3 +764,75 @@ viz_placeholder_hist <- function(...){
       )
     )
 }
+
+uncertainty_card <- function(simulation_data){
+
+  if(is.null(simulation_data)) return(
+    div(
+      class = "card h-100",
+      div(
+        class = "card-header",
+        tags$b("Uncertainty content")
+      ),
+      div(
+        class = "card-body h-100",
+        p(
+          "When uncertainty information in entered using the top right",
+          "toggle, this analysis will perform 5000 simualtions of possible",
+          "returns on investment, allowing businesses to guage likelyhood",
+          "of posititive returns."
+        )
+      )
+    )
+  )
+
+  roi_dist <- simulation_data$roi
+  roi_prob <- round(sum(roi_dist > 0) * 100 / length(roi_dist))
+
+  uncertainty_header <- fcase(
+    all(roi_dist == 0), "Something doesn't look right...",
+    all(roi_dist >= 0), "Very high probability of positive returns",
+    all(roi_dist <= 0), "Very high probability of negative returns",
+    roi_prob >= 70, paste0(roi_prob, "High probability of positive returns"),
+    roi_prob <= 30, paste0(roi_prob, "High probability of negative returns"),
+    TRUE, paste0(roi_prob, "Moderate probability of positive returns")
+  )
+
+  uncertainty_header_class <- fcase(
+    all(roi_dist == 0), "card-header text-white bg-warning",
+    all(roi_dist >= 0), "card-header text-white bg-success",
+    all(roi_dist <= 0), "card-header text-white bg-danger",
+    roi_prob >= 70, "card-header text-white bg-success",
+    roi_prob <= 30, "card-header text-white bg-danger",
+    TRUE, "card-header"
+  )
+
+  uncertainty_text <- fcase(
+    all(roi_dist == 0), "All 5000 simulation runs returned 0% discounted return on investment.",
+    all(roi_dist >= 0), "All 5000 simulation runs returned a positive discounted return on investment, suggesting a very high likelyhood of positive returns.",
+    all(roi_dist <= 0), "All 5000 simulation runs returned a negative discounted return on investment, suggesting a very high likelyhood of negative returns.",
+    roi_prob >= 70, paste0(roi_prob, "% of 5000 simulation runs returned a positive discounted return on investment, suggesting a good chance of positive return on investment."),
+    roi_prob <= 30, paste0(roi_prob, "% of 5000 simulation runs returned a positive discounted return on investment, suggesting a poor chance of positive return on investment."),
+    TRUE, paste0(roi_prob, "% of 5000 simulation runs returned a positive discounted return on investment.")
+  )
+
+  out <- div(
+    class = "card h-100",
+    div(
+      class = uncertainty_header_class,
+      tags$b(uncertainty_header)
+    ),
+    div(
+      class = "card-body h-100",
+      p(
+        "Using uncertainty input information, this analysis ran 5000",
+        "simualtions of possible returns on investment.",
+        uncertainty_text
+      )
+    )
+  )
+
+  return(out)
+
+}
+
