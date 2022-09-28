@@ -83,6 +83,7 @@ subtitle <- if(is.null(params$business_name)){
 \pagenumbering{gobble}
 \topskip0pt
 \vspace*{\fill}
+\setcounter{tocdepth}{1}
 \tableofcontents
 \vspace*{\fill}
 \copyright \enspace Department of Jobs, Precincts and Regions, 
@@ -97,19 +98,21 @@ The content of this Victorian Government report is provided for information purp
 This automated report provides summary information from [Agriculture Victoria's 
 traceability system cost-benefit tool](https://djpr-spp.shinyapps.io/traceability/). 
 All information contained in this report reflects summarised inputs provided by users or 
-transformations of those inputs as detailed in the methodology section. 
+transformations of those inputs as detailed in the methodology section. Any results presented are general in nature and the choice to adopt a traceability system should be considered alongside other information and expertise
 
 For more information on traceability systems and how they might benefit your business,
 see the [Agriculture Victoria traceability page](https://agriculture.vic.gov.au/export/traceability).
 
 # Results
+The Agriculture Victoria traceability cost-benefit tool summarises information about how traceability may affect your business into two key measures; discounted return on investment and discounted returns. Return on investment is a percentage of how much dollar benefit you will receive relative to cost and returns represent profit in dollars. Note that both of these measures are discounted. Discounting accounts for the time value of money, i.e. that a dollar earned today is worth more than a dollar earned next year because it can be invested. For example, if a business earns \$100 today and holds it in a bank account earning 3% per year, then you would have \$3 more than if you had receive the money a year later. In this example, an appropriate discount rate would be 3%. This analysis uses a discount rate of `r params$discount_rate`%.
+
 ```{r results_text, message=FALSE, warning=FALSE, include=FALSE}
 
 returns_sign <- if(params$returns < 0 ) "-$" else "$"
 
 result_text <- if(params$roi >= 0){
     paste0(
-      "This cost-benefit analyis estimates traceability systems should benefit your business ",
+      "This analyis estimates traceability systems should benefit your business ",
       "with a total ",  round(params$roi, 1), "% discounted return on investment",
       " (or ", returns_sign, format(round(abs(params$returns)), big.mark = ","),
       ") over ", params$n_years, " years. "
@@ -179,7 +182,7 @@ kable(
 
 ```
 
-`r yearly_text` Figure 1 shows how overall expected discounted return on 
+`r yearly_text` Figure 1 shows how expected return on 
 investment will change each year.
 
 ```{r annual_calcs, echo=FALSE, message=FALSE, warning=FALSE, fig.cap="Returns by year", fig.height=5}
@@ -228,6 +231,8 @@ a / b
 
 
 # Probability of positive returns
+Where enabled, this analysis will simulate 5000 plausible outcomes and generate a distribution of possible returns. This distribution can then be used to gauge likelihood of positive returns; the more simulation runs which generate positive returns, the greater likelihood of traceability systems benefiting your business. 
+
 ```{R uncertainty, include=FALSE}
 has_uncertainty <- "beta" %in% names(params$input_set)
 
@@ -262,13 +267,77 @@ if(has_uncertainty){
 }
 ```
 
-# Inputs 
-Table 2 provides a copy of all inputs in the cost-benefit analysis. These inputs are provided for reference purposes. If uncertainty content was completed as part of the cost-benefit analysis, this table will also include the alpha and beta shape parameters for probability distributions as detailed in the methodology section. 
+# Methodology
+## Return on investment
+Estimates of dollar returns and return on investment represent simple summations of input data with discounting. Inputs are categorised into three groups; upfront costs, ongoing benefits and ongoing costs (as shown in table 1). Ongoing benefits and ongoing costs are discounted using the following present-value annuity formula. In this formula, x represents the value to discount, n represents the chosen number of years, and r represents the discount rate.
+
+\[discount(x)=x \frac{1-( 1 + r)^{-n}}{r}\]
+
+With this, return on investment and dollar returns are defined as:
+
+\[ROI = \frac{discount(ongoing\:benefits)}{upfront\:costs + discount(ongoing\:costs)} - 1\]
+
+\[Returns = discount(ongoing\:benefits) - upfront\:costs - discount(ongoing\:costs)\]
+
+## Probabilistic returns
+If a user completed the online web tool with uncertainty content switched on, this report will contain distributions of return on investment. This distribution is based on 5000 random draws from each input's unique probability distribution. For any given input with uncertainty properties filled, a beta distribution is calculated. This analysis uses a beta distribution to generate skewed distributions where a users expected input is not a midpoint of the input range. The first shape parameter of the beta distribution ($\alpha$) takes one of three values depending on the chosen uncertainty level, as detailed in table 2.
+
+```{r alpha, eval=FALSE, include=FALSE}
+
+# kable(
+#   data.frame(
+#     uncertainty = c("Low", "Medium", "High"),
+#     alpha = c(34, 6, 2),
+#     share = c("90%", "50%", "30%")
+#   ), 
+#   caption = "Beta distribution shape parameters", 
+#   col.names = c(
+#     "User input", 
+#     "$\\alpha value$", 
+#     "Share of distribution +/- 10% total range from mean"
+#     ),
+#   format = "latex",
+#   position = "H",
+#   align = "lrr",
+#   vline = "",
+#   booktabs = T
+# )
+
+```
+\begin{table}[H]
+
+\caption{Beta distribution shape parameters}
+\centering
+\begin{tabular}[t]{lrr}
+\toprule
+User input & $\alpha$ value & Share of distribution +/- 10\% total range from mean\\
+\midrule
+Low & 34 & 90\%\\
+Medium & 6 & 50\%\\
+High & 2 & 30\%\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The second shape parameter ($\beta$) is calculated as a function of $\alpha$, the expected value and range user input using the following:
+
+\[\beta = \alpha * \frac{max - min}{expected - min} - \alpha\]
+
+The resulting beta distribution using $\alpha$ and $\beta$ is linearly scaled to the input range parameters.
+
+## Code
+This web tool is available as [R and Javascript code on Github](https://github.com/djpr-data/traceabilityform). The software is licensed under the standard MIT license meaning it is free for commercial use and manipulation with limited liability to Department of Jobs, Precincts and Regions and any other contributors to the code base. 
+
+\pagebreak
+# Appendix: Web tool inputs 
+Table 3 provides a copy of all inputs in the cost-benefit analysis. These inputs are provided for reference purposes. If uncertainty content was completed as part of the cost-benefit analysis, this table will also include the alpha and beta shape parameters for probability distributions as detailed in the methodology section. 
 ```{R inputs, echo=FALSE}
 df <- copy(params$input_set)
 setDT(df)
 
-df[, c("alpha", "beta", "units", "flow") := NULL]
+df[, c("units", "flow") := NULL]
+
+setnames(df, "variable", "variable_id")
 
 column_names <- gsub("_", " ", colnames(df))
 column_names <- tools::toTitleCase(column_names)
@@ -286,5 +355,5 @@ kable(
 )
 ```
 
-# Methodology
+
 
