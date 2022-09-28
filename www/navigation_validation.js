@@ -64,9 +64,12 @@ $(document).ready(function () {
     inputs.removeClass("is-invalid");
 
     var allValid = true;
-    inputs.each(function (index, value) {
-      allValid = allValid & ($(value).val().length > 0);
-    });
+
+    if (activeTabName != "Results") {
+      inputs.each(function (index, value) {
+        allValid = allValid & ($(value).val().length > 0);
+      });
+    }
 
     inputSet[activeTabName] = collectInputs();
     Shiny.onInputChange("input_set", inputSet);
@@ -116,9 +119,12 @@ $(document).ready(function () {
       inputs.removeClass("is-invalid");
 
       var allValid = true;
-      inputs.each(function (index, value) {
-        allValid = allValid & ($(value).val().length > 0);
-      });
+      if (activeTabName != "Results") {
+        console.log("Input check run");
+        inputs.each(function (index, value) {
+          allValid = allValid & ($(value).val().length > 0);
+        });
+      }
 
       inputs.each(function (index, value) {
         if ($(value).val().length == 0) {
