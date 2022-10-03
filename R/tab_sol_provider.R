@@ -47,7 +47,7 @@ tab_sol_provider <- function(...) tabPanel(
     input_type = "dollar",
     content_type = "advanced"
   ),
-  h3("Ongoing costs"),
+  h3("Ongoing costs (per year)"),
   input_row(
     inputId = "sol_ongoing_tot",
     label = "Total ongoing provider costs",

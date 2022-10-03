@@ -16,8 +16,8 @@ ui <- navbarPage(
   tab_red_costs(),
   tab_red_crisis(),
   tab_sol_provider(),
-  tab_bus_costs(),
   tab_sup_chain(),
+  tab_bus_costs(),
   tab_results(),
   # Page options
   id = "tabset",
@@ -52,7 +52,7 @@ ui <- navbarPage(
         style = "float: right;",
         materialSwitch(
           "switch_advanced",
-          label = "Additonal detail",
+          label = "Additional detail",
           inline = TRUE
         ),
         materialSwitch(
