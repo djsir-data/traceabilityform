@@ -83,6 +83,38 @@ $(document).ready(function () {
           this.classList.add("is-invalid");
         }
       });
+    } else {
+      // Switch hider
+      var targetTab = e.target.getAttribute("data-value");
+      console.log(targetTab);
+      if (
+        targetTab === "financials" ||
+        targetTab === "red_crisis" ||
+        targetTab === "results"
+      ) {
+        $("#switch_advanced").parent().hide();
+      } else {
+        $("#switch_advanced").parent().show();
+      }
+      if (targetTab === "results") {
+        $("#switch_advanced")
+          .parent()
+          .parent()
+          .parent()
+          .parent()
+          .parent()
+          .hide();
+      } else {
+        $("#switch_advanced")
+          .parent()
+          .parent()
+          .parent()
+          .parent()
+          .parent()
+          .show();
+      }
+      // Scroll to top
+      $("html, body").animate({ scrollTop: 0 }, "fast");
     }
   });
 
