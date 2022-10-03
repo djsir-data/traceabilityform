@@ -72,3 +72,7 @@
   top: calc((0% - (100% - 1em)) - 9%);
 }
 
+#ss-connect-dialog {
+  top: 50px !important;
+  bottom: auto !important;
+}
