@@ -4,8 +4,20 @@ tab_add_revenue <- function(...) tabPanel(
   h2('New revenue sources'),
   p(
     "The following inputs gauge how traceability may help your business increase",
-    "revenue. All inputs are presented as percentage increases in total revenue.
-    If you're unsure of how traceability may help your business increase revenue, use",
+    "revenue. All inputs are presented as ",
+    tags$strong(
+      class = "text-decoration-underline",
+      "percentage increases in total revenue."
+      ),
+    "For example:",
+    tags$figure(
+      class = "text-center",
+      tags$blockquote(
+        class = "blockquote",
+        HTML("0.5% increase &times; $100,000 total revenue = $500 revenue increase")
+      )
+    ),
+    "If you're unsure of how traceability may help your business increase revenue, use",
     "the additional detail switch to itemise various ways traceability may",
     "benefit your business. If you are uncertain in your estimates of revenue",
     "increase, use the uncertainty toggle to estimate a range of outcomes."
@@ -100,14 +112,12 @@ tab_add_revenue <- function(...) tabPanel(
   ),
 
   tags$strong(
-    class = "advancedContent",
     "What costs (excluding traceability costs) would be required to achieve this growth?"
   ),
   input_row(
     inputId = "add_rev_cost",
     label = "Costs from revenue increase",
-    input_type = "percent",
-    content_type = "advanced"
+    input_type = "percent"
   )
 
 )
