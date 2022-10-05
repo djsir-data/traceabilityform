@@ -49,9 +49,7 @@ tab_start <- function(...) tabPanel(
     "like this analysis to evaluate and a prefered discount rate. A discount",
     "rate can be thought of as the rate your investment dollars would be",
     "earning if not used for traceability systems, for example, they could be",
-    "earning interest in a bank account or invested in securities. If you're",
-    "not sure, this analysis will use the 10-year Australian Treasury bond",
-    "yield as an estimated risk-free rate of return."
+    "earning interest in a bank account or invested in securities."
   ),
   br(),
 
@@ -66,7 +64,7 @@ tab_start <- function(...) tabPanel(
         target = "blank"
       )
     ),
-    value = readRDS("app-cache/gov_bond.rds"),
+    value = 10,
     min = 0,
     max = 100
   ),
