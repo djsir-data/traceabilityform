@@ -3,7 +3,7 @@ tab_bus_costs <- function(...) tabPanel(
   value = 'bus_costs',
   h2('Business costs'),
   p(
-    "This page accounts for costs incurred your business (excluding those",
+    "This page accounts for costs incurred by your business (excluding those",
     "imposed by the service provider) in order to integrate a new",
     "traceability system. All inputs are dollar values. "
   ),
@@ -47,7 +47,7 @@ tab_bus_costs <- function(...) tabPanel(
     input_type = "dollar",
     content_type = "advanced"
   ),
-  h3("Ongoing costs"),
+  h3("Ongoing costs (per year)"),
   input_row(
     inputId = "bus_ongoing_tot",
     label = "Total ongoing business costs",

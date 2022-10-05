@@ -8,9 +8,9 @@ tab_start <- function(...) tabPanel(
   # Intro text
   p(
     "The Agriculture Victoria traceability cost-benefit tool helps businesses",
-    "estimate the financial returns to adopting traceability systems. This",
-    "tool asks questions about where your business may benefit from",
-    "traceability and costs you may incur and summarises to generate an",
+    "estimate the financial returns from adopting traceability systems. This",
+    "tool asks questions about how your business may benefit from",
+    "traceability and costs you may incur. This information is used to generate an",
     "expected return on investment. This web tool does not collect any",
     "financial information that you may enter. All information is deleted",
     "after your session ends. You will have the option to download your",
@@ -29,14 +29,14 @@ tab_start <- function(...) tabPanel(
     "Analysis options"
     ),
   p(
-    "When using this tool, you can toggle additional detail or uncertianty",
+    "When using this tool, you can toggle additional detail or uncertainty",
     "using the switches in the top right corner. Where applicable, the",
     "additional detail switch will itemise a cost or benefit into more",
-    "detailed componenets. This may be useful when trying to determine how a",
+    "detailed components. This may be useful when trying to determine how a",
     "cost or benefit may impact your business. The uncertainty switch enables ",
-    "calculation of proabalistic returns. By entering additional detail on",
+    "calculation of probabilistic returns. By entering additional detail on",
     "how certain you are about the value of a cost or benefit, this tool will",
-    "simulate 5000 plausable scenarios and report how many of them generated",
+    "simulate 5000 plausible scenarios and report how many of them generated",
     "a positive return for your business."
   ),
   br(),
@@ -46,7 +46,7 @@ tab_start <- function(...) tabPanel(
     ),
   p(
     "Before you begin, please enter how many years into the future you would",
-    "like this analysis to evaluate and a prefered discount rate. A discount",
+    "like this analysis to evaluate and a preferred discount rate. A discount",
     "rate can be thought of as the rate your investment dollars would be",
     "earning if not used for traceability systems, for example, they could be",
     "earning interest in a bank account or invested in securities."

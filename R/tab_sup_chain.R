@@ -3,7 +3,7 @@ tab_sup_chain <- function(...) tabPanel(
   value = 'sup_chain',
   h2('Supply chain costs'),
   p(
-    "This page accounts for costs your business is expected to incur from",
+    "This page accounts for any costs your business is expected to incur from",
     "integrating the new system with the systems of supply chain partners.",
     "All inputs are dollar value."
   ),
@@ -33,7 +33,7 @@ tab_sup_chain <- function(...) tabPanel(
     input_type = "dollar",
     content_type = "advanced"
   ),
-  h3("Ongoing costs"),
+  h3("Ongoing costs (per year)"),
   input_row(
     inputId = "sup_ongoing_tot",
     label = "Total ongoing costs",
