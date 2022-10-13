@@ -7,7 +7,7 @@ ui <- navbarPage(
   windowTitle = "Traceability cost-benefit",
   title = span(
     style = "font-family:VIC-Bold;",
-    HTML("Is tracability</br>right for you?")
+    HTML("Is tracability right<br />for your business?")
   ),
   # Tabs
   tab_start(),
@@ -41,7 +41,6 @@ ui <- navbarPage(
     tags$head(
       tags$link(rel = "stylesheet", type = "text/css", href = "agvic.css"),
       tags$script(src = "navigation_validation.js"),
-      # tags$script(src = "height_sync.js"),
       # DEV
       shinyjs::useShinyjs()
     ),

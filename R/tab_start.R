@@ -3,25 +3,51 @@ tab_start <- function(...) tabPanel(
   value = 'start',
 
   # Title
-  h2('Start'),
+  h2('Introduction'),
 
   # Intro text
   p(
-    "The Agriculture Victoria traceability cost-benefit tool helps businesses",
-    "estimate the financial returns from adopting traceability systems. This",
-    "tool asks questions about how your business may benefit from",
-    "traceability and costs you may incur. This information is used to generate an",
-    "expected return on investment. This web tool does not collect any",
-    "financial information that you may enter. All information is deleted",
-    "after your session ends. You will have the option to download your",
-    "results and inputs in a PDF report on the results page."
+    "The traceability cost-benefit analysis tool has been developed to help",
+    "agricultural businesses calculate: ",
+    tags$ul(
+      tags$li("whether a traceability system would benefit their business"),
+      tags$li(
+        "their expected return on investment (ROI)",
+        tags$sup(
+          tags$a(
+            icon("circle-info"),
+            href = "https://www.investopedia.com/terms/r/returnoninvestment.asp",
+            rel = "external",
+            target = "blank",
+            style = "text-decoration: none;"
+          )
+        ),
+        " by year and"
+        ),
+      tags$li(
+        "a breakdown of the cost/benefit depending on the detail of data",
+        "provided."
+        )
+    ),
+    "Users are asked questions about the benefits of traceability in their",
+    "business. And are required to estimate any costs associated with",
+    "upgrading or introducing a new traceability system."
+  ),
+  tags$strong(tags$em("Please note:")),
+  tags$ul(
+    tags$li(
+      "This web tool does not collect and/or store any financial information",
+      "a user may enter."
+      ),
+    tags$li("All information is deleted after the session ends.")
   ),
   p(
-    "Please note that this tool is for guidance purposes only. Any results",
-    "presented are general in nature and the choice to adopt a traceability",
+    "Users will have the option to download results and inputs in a PDF",
+    "report on the results page. This tool is for guidance purposes only. Any",
+    "results are general in nature and the choice to adopt a traceability",
     "system should be considered alongside other information and expertise.",
-    "No claim is made as to the accuracy or appropriateness of any content",
-    "or results in this report at any time."
+    "No claim is made about the accuracy or appropriateness of any content or",
+    "results in this report at any time."
   ),
   br(),
   tags$strong(
@@ -29,27 +55,64 @@ tab_start <- function(...) tabPanel(
     "Analysis options"
     ),
   p(
-    "When using this tool, you can toggle additional detail or uncertainty",
-    "using the switches in the top right corner. Where applicable, the",
-    "additional detail switch will itemise a cost or benefit into more",
-    "detailed components. This may be useful when trying to determine how a",
-    "cost or benefit may impact your business. The uncertainty switch enables ",
-    "calculation of probabilistic returns. By entering additional detail on",
-    "how certain you are about the value of a cost or benefit, this tool will",
-    "simulate 5000 plausible scenarios and report how many of them generated",
-    "a positive return for your business."
+    "Using the switches in the top right corner, users  can select ‘additional",
+    "detail’ or ‘uncertainty’ when inputting data.",
+    tags$img(
+      src = "switch_demo.png",
+      alt = "Image of toggle switches",
+      style = "display: block; border-radius: 5px;border: 1px solid black;",
+      class = "my-2"
+      ),
+    "Where applicable, the ‘additional detail’ switch will list individual",
+    "cost/benefit considerations. This may be useful when trying to determine",
+    "how a cost or benefit may impact a business. "
   ),
-  br(),
+  p(
+    "The ‘uncertainty’ switch enables calculation of risk in returns.",
+    tags$sup(
+      tags$a(
+        icon("circle-info"),
+        href = "https://www.investopedia.com/terms/r/risk.asp",
+        rel = "external",
+        target = "blank",
+        style = "text-decoration: none;"
+      )
+    ),
+    " By selecting a level of certainty (High | Medium | Low), users can",
+    "confirm the accuracy of the amount they’ve used for each item. Using the",
+    "‘uncertainty’ switch will simulate 5,000 plausible scenarios",
+    " and report how many of them lead to a positive return for the business.",
+    tags$sup(
+      tags$a(
+        icon("circle-info"),
+        href = "https://www.investopedia.com/terms/m/montecarlosimulation.asp",
+        rel = "external",
+        target = "blank",
+        style = "text-decoration: none;"
+      )
+    )
+  ),
+  h2("Start"),
   tags$strong(
     class = "text-decoration-underline",
     "Evaluation period and discounting"
     ),
   p(
     "Before you begin, please enter how many years into the future you would",
-    "like this analysis to evaluate and a preferred discount rate. A discount",
-    "rate can be thought of as the rate your investment dollars would be",
-    "earning if not used for traceability systems, for example, they could be",
-    "earning interest in a bank account or invested in securities."
+    "like this analysis to evaluate and a preferred",
+    tags$a(
+      "discount rate.",
+      href="#",
+      `data-bs-toggle`="tooltip",
+      `data-bs-placement`="bottom",
+      onclick="return false;",
+      `data-bs-title`=paste(
+        "A discount rate can be thought of as the rate your investment dollars",
+        "would be earning if not used for traceability systems, for example,",
+        "they could be earning interest in a bank account or invested in",
+        "securities."
+      )
+    )
   ),
   br(),
 

@@ -8,8 +8,8 @@ tab_financials <- function(...) tabPanel(
   # Some text
   p(
     "Please enter your current annual revenue and total costs below. This",
-    "information is used to calculate the dollar value of percentage changes",
-    "in revenue and costs.",
+    "information is used to calculate the dollar-value equivalent of",
+    "percentage changes in revenue and costs.",
     tags$strong(
       "This information will not be saved and is deleted after your session",
       "ends."
