@@ -10,6 +10,13 @@ $(document).ready(function () {
   $(".uncertaintyContent").hide();
   $('a[data-toggle="tab"]').not(".active").addClass("disabled");
   $("#btn_prev").hide();
+  $("#switch_advanced")
+          .parent()
+          .parent()
+          .parent()
+          .parent()
+          .parent()
+          .hide();
 
   // Array of tabs
   var tabList = [];
@@ -92,7 +99,6 @@ $(document).ready(function () {
     } else {
       // Switch hider
       var targetTab = e.target.getAttribute("data-value");
-      console.log(targetTab);
       if (
         targetTab === "financials" ||
         targetTab === "red_crisis" ||
@@ -102,7 +108,7 @@ $(document).ready(function () {
       } else {
         $("#switch_advanced").parent().show();
       }
-      if (targetTab === "results") {
+      if (targetTab === "results" || targetTab === "start") {
         $("#switch_advanced")
           .parent()
           .parent()
