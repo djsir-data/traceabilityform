@@ -88,12 +88,14 @@ server <- function(input, output, session) {
     if(input$switch_advanced) shinyjs::click("switch_advanced")
     if(input$switch_uncertainty) shinyjs::click("switch_uncertainty")
     prefill_values(input, output, session)
+    shinyjs::removeClass(class = "disabled", selector = "a[data-toggle='tab']")
   })
 
   observeEvent(input$dev_prefill_uncertainty, {
     if(!input$switch_advanced) shinyjs::click("switch_advanced")
     if(!input$switch_uncertainty) shinyjs::click("switch_uncertainty")
     prefill_values(input, output, session)
+    shinyjs::removeClass(class = "disabled", selector = "a[data-toggle='tab']")
   })
 
   # Get input metadata

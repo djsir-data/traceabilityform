@@ -780,7 +780,17 @@ uncertainty_card <- function(simulation_data){
           "When uncertainty information in entered using the top right",
           "toggle, this analysis will perform 5000 simualtions of possible",
           "returns on investment, allowing businesses to guage likelyhood",
-          "of posititive returns."
+          "of posititive returns.",
+          tags$sup(
+            tags$a(
+              icon("circle-info"),
+              href = "https://www.investopedia.com/terms/m/montecarlosimulation.asp",
+              rel = "external",
+              target = "blank",
+              style = "text-decoration: none;",
+              `aria-label` = "Link to information on simulation"
+            )
+          )
         )
       )
     )
@@ -827,6 +837,16 @@ uncertainty_card <- function(simulation_data){
       p(
         "Using uncertainty input information, this analysis ran 5000",
         "simualtions of possible returns on investment.",
+        tags$sup(
+          tags$a(
+            icon("circle-info"),
+            href = "https://www.investopedia.com/terms/m/montecarlosimulation.asp",
+            rel = "external",
+            target = "blank",
+            style = "text-decoration: none;",
+            `aria-label` = "Link to information on simulation"
+          )
+        ),
         uncertainty_text
       )
     )

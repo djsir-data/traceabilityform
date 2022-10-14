@@ -5,6 +5,25 @@ tab_results <- function(...) tabPanel(
 
   h2('Results'),
   div(
+    class = "alert alert-light alert-dismissible fade show",
+    role="alert",
+    tags$strong(tags$em("Please note:")),
+    tags$button(
+      type = "button",
+      class = "btn-close",
+      `data-bs-dismiss`="alert",
+      `aria-label`="Close",
+      style = "color:#000000"
+    ),
+    tags$ul(
+      tags$li(
+        "This web tool does not collect and/or store any financial information",
+        "a user may enter."
+      ),
+      tags$li("All information is deleted after the session ends.")
+    )
+  ),
+  div(
     class = "row  py-4",
     div(
       class = "col-md-7",
@@ -85,7 +104,7 @@ tab_results <- function(...) tabPanel(
   # Uncertainty content
   h3(
     class = "pt-5 pb-2",
-    "Probably of positive returns"
+    "Probability of positive returns"
     ),
   div(
     class = "row",

@@ -2,13 +2,13 @@ tab_add_revenue <- function(...) tabPanel(
   title = 'New revenue',
   value = 'add_revenue',
   h2('New revenue sources'),
-  p(
-    "The following inputs gauge how traceability may help your business increase",
-    "revenue. All inputs are presented as ",
+  p("What is your expected increase in revenue from introducing traceability?"),
+  p("Consider how traceability may help your business increase revenue.
+    All inputs are presented as ",
     tags$strong(
       class = "text-decoration-underline",
       "percentage increases in total revenue."
-      ),
+    ),
     "For example:",
     tags$figure(
       class = "text-center",
@@ -17,11 +17,15 @@ tab_add_revenue <- function(...) tabPanel(
         HTML("0.5% increase &times; $100,000 total revenue = $500 revenue increase")
       )
     ),
-    "If you're unsure of how traceability may help your business increase revenue, use",
-    "the additional detail switch to itemise various ways traceability may",
-    "benefit your business. If you are uncertain in your estimates of revenue",
-    "increase, use the uncertainty toggle to estimate a range of outcomes."
   ),
+  tags$i(
+    "Tip:",
+    br(),
+    "Use the ‘additional detail’ and ‘uncertainty’ switches to calculate your
+    business’ traceability drivers."
+  ),
+  br(),
+  br(),
 
   # Basic content (totals)
   div(

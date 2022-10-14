@@ -3,9 +3,20 @@ tab_sol_provider <- function(...) tabPanel(
   value = 'sol_provider',
   h2('Solution provider costs'),
   p(
-    "This page accounts for costs imposed by the traceability service",
-    "provider. All inputs are dollar values."
+  "How much will it cost to upgrade or install a new traceability system in
+  your business?"
   ),
+  p(
+    "TThis section accounts for costs charged by the traceability service
+    provider. All inputs are dollar values."
+  ),
+  br(),
+  tags$i(
+    "Tip:", br(),
+    "Use the ‘additional detail’ and ‘uncertainty’ switches to calculate costs
+    you may not have considered."
+  ),
+  br(),
   # Basic upfront costs
   h3("Upfront costs"),
   input_row(

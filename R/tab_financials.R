@@ -7,12 +7,14 @@ tab_financials <- function(...) tabPanel(
 
   # Some text
   p(
-    "Please enter your current annual revenue and total costs below. This",
-    "information is used to calculate the dollar-value equivalent of",
-    "percentage changes in revenue and costs.",
+    "What is your current annual revenue and total business operating costs?
+    This information is used to calculate the dollar value equivalent of
+    percentage changes in revenue and costs.",
+    br(),
+    br(),
     tags$strong(
-      "This information will not be saved and is deleted after your session",
-      "ends."
+      "This information will not be saved and is deleted after your session
+      ends."
     )
   ),
 

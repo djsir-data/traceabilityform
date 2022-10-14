@@ -3,10 +3,21 @@ tab_sup_chain <- function(...) tabPanel(
   value = 'sup_chain',
   h2('Supply chain costs'),
   p(
-    "This page accounts for any costs your business is expected to incur from",
-    "integrating the new system with the systems of supply chain partners.",
-    "All inputs are dollar value."
+    "Have you considered all costs associated with upgrading or installing a
+    new traceability system?"
+    ),
+  p(
+    "This section accounts for costs incurred by your business (excluding those
+    imposed by the service provider) to integrate a new traceability system.
+    All inputs are dollar values."
   ),
+  br(),
+  tags$i(
+    "Tip:", br(),
+    "Use the ‘additional detail’ and ‘uncertainty’ switches to calculate costs
+    you may not have considered."
+  ),
+  br(),
   h3("Upfront costs"),
   input_row(
     inputId = "sup_upfront_tot",

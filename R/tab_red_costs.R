@@ -3,9 +3,15 @@ tab_red_costs <- function(...) tabPanel(
   value = 'red_costs',
   h2('Cost savings'),
   p(
-    "The following inputs represent how much traceability can reduce ",
-    "various business costs such as regulatory compliance or inventory",
-    "management. All inputs are presented as",
+  "Can traceability reduce various business costs by automating processes and
+   generating reports?"
+  ),
+  p(
+    "The following inputs represent how much traceability can reduce various
+    business costs such as regulatory compliance or inventory management."
+  ),
+  p(
+    "All inputs are presented as",
     tags$strong(
       class = "text-decoration-underline",
       "percentage decrease in total cost."
@@ -18,9 +24,18 @@ tab_red_costs <- function(...) tabPanel(
         HTML("0.2% decrease &times; $100,000 total cost = $200 cost reduction")
       )
     ),
-    "Please note that this does not include the reduced costs of crisis",
-    "management which are estimated on the next page"
+    "Please note: this does not include the reduced costs of crisis management
+    as they’re estimated in the next section."
   ),
+  br(),
+  tags$i(
+    "Tip:",
+    br(),
+    "Use the ‘additional detail’ and ‘uncertainty’ switches to calculate your
+    business’ potential cost savings if using an effective system."
+  ),
+  br(),
+  br(),
 
   input_row(
     inputId = "red_costs_total",
