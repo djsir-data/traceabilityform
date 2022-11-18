@@ -3,7 +3,7 @@ tab_start <- function(...) tabPanel(
   value = 'start',
 
   div(
-    class="alert alert-info alert-dismissible fade show my-4",
+    class="alert alert-warning alert-dismissible text-body my-4",
     role="alert",
     h4(class = "alert-heading", "Welcome", style = "font-family: VIC-Regular"),
     tags$button(
@@ -16,6 +16,7 @@ tab_start <- function(...) tabPanel(
       "Thank you for using the traceability cost-benefit analysis tool. We've
       just launched this product and we're keen to hear your feedback at ",
       tags$a(
+        class = "alert-link text-body",
       "traceability@agriculture.vic.gov.au.",
       href ="mailto:traceability@agriculture.vic.gov.au"
       ),
@@ -36,6 +37,7 @@ tab_start <- function(...) tabPanel(
       "We are committed to making content accessable to all users and we're
       currently working to make this tool fully accessable. If you require this
       content in a different format please ", tags$a(
+        class = "alert-link text-body",
         "email us for additional resources.",
         href ="mailto:traceability@agriculture.vic.gov.au")
     )

@@ -27,9 +27,10 @@ ui <- navbarPage(
   lang = "en",
   theme = bslib::bs_theme_update(
     bslib::bs_theme(bootswatch = "flatly", version = 5),
-    primary = "#67823A",
-    secondary = "#53565A",
-    success = "#759157",
+    primary = "#00573F",
+    secondary = "#003A28",
+    success = "#00573F",
+    warning = "#DDD4C2",
     info = "#00573F",
     font_scale = 1.1,
     base_font = "VIC-Regular",

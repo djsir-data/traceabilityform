@@ -30,11 +30,7 @@
        url("./fonts/VIC-Bold.ttf") format("truetype");
 }
 
-.navbar{
-  background-image: url("header_background.svg");
-  background-repeat: no-repeat;
-  background-size: cover;
-}
+
 .navbar.navbar-default ul li{
   counter-increment: tabIndex;
 }
