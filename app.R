@@ -7,7 +7,7 @@ ui <- navbarPage(
   windowTitle = "Traceability cost-benefit",
   title = span(
     style = "font-family:VIC-Bold;",
-    HTML("Is tracability right<br />for your business?")
+    "Is tracability right for your business?"
   ),
   # Tabs
   tab_start(),
@@ -25,14 +25,14 @@ ui <- navbarPage(
   # fluid = FALSE,
   collapsible = TRUE,
   lang = "en",
-  theme = bslib::bs_theme_update(
-    bslib::bs_theme(bootswatch = "flatly", version = 5),
+  theme = bslib::bs_theme(bootswatch = "flatly", version = 5) %>%
+    bslib::bs_theme_update(
     primary = "#00573F",
     secondary = "#003A28",
     success = "#00573F",
     warning = "#DDD4C2",
     info = "#00573F",
-    font_scale = 1.1,
+    font_scale = 1,
     base_font = "VIC-Regular",
     heading_font = "VIC-Bold"
   ),
