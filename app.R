@@ -64,20 +64,37 @@ ui <- navbarPage(
     )
   ),
   # Previous and next button footer
-  footer = column(
-    12,
-    style = "padding-top:50px;padding-bottom:50px;",
-    actionButton(
-      "btn_prev",
-      span(icon("arrow-left"), " Previous")
-    ),
-    actionButton(
-      "btn_next",
-      span("Next ", icon("arrow-right")),
-      style = "float: right;"
+  footer =
+    tagList(
+      fluidRow(
+        column(
+          12,
+          style = "padding-top:50px;padding-bottom:50px;",
+          actionButton(
+            "btn_prev",
+            span(icon("arrow-left"), " Previous")
+          ),
+          actionButton(
+            "btn_next",
+            span("Next ", icon("arrow-right")),
+            style = "float: right;"
+          )
+        )
+      ),
+      fluidRow(
+        disclaimer(),
+        div(
+          class = "col-sm-12 text-center pb-2",
+          tags$button(
+            type="button",
+            class="btn btn-link",
+            `data-bs-toggle`="modal",
+            `data-bs-target`="#disclaimer",
+            "Disclaimer"
+          )
+        )
+      )
     )
-  )
-
 )
 
 
