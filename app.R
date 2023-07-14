@@ -43,7 +43,8 @@ ui <- navbarPage(
       tags$link(rel = "stylesheet", type = "text/css", href = "agvic.css"),
       tags$script(src = "navigation_validation.js"),
       # DEV
-      shinyjs::useShinyjs()
+      shinyjs::useShinyjs(),
+      includeHTML("google_analytics.html")
     ),
     # Advanced switch
     column(
