@@ -7,7 +7,7 @@ ui <- navbarPage(
   windowTitle = "Traceability cost-benefit",
   title = span(
     style = "font-family:VIC-Bold;",
-    "Is tracability right for your business?"
+    "Is traceability right for you?"
   ),
   # Tabs
   tab_start(),

@@ -13,14 +13,8 @@ tab_start <- function(...) tabPanel(
       `aria-label`="Close"
       ),
     p(
-      "Thank you for using the traceability cost-benefit analysis tool. We've
-      just launched this product and we're keen to hear your feedback at ",
-      tags$a(
-        class = "alert-link text-body",
-      "traceability@agriculture.vic.gov.au.",
-      href ="mailto:traceability@agriculture.vic.gov.au"
-      ),
-      "For a demonstartion of how this tool can help, click below to prefill example information.",
+      "Thank you for using the traceability cost-benefit analysis tool.",
+      "For a demonstartion of how this tool can help, click 'run example cost-benefit’.",
       div(
         class = "my-2",
         tags$button(
@@ -34,12 +28,13 @@ tab_start <- function(...) tabPanel(
     ),
     tags$hr(),
     tags$p(
-      "We are committed to making content accessable to all users and we're
-      currently working to make this tool fully accessable. If you require this
-      content in a different format please ", tags$a(
+      "We are committed to making content accessible to all users and we're
+      currently working to make this tool fully accessible. If you require this
+      content in a different format please email", tags$a(
         class = "alert-link text-body",
-        "email us for additional resources.",
-        href ="mailto:traceability@agriculture.vic.gov.au")
+        "traceability@agriculture.vic.gov.au",
+        href ="mailto:traceability@agriculture.vic.gov.au"),
+      "for additional resources."
     )
   ),
 
@@ -53,7 +48,7 @@ tab_start <- function(...) tabPanel(
     tags$ul(
       tags$li("whether a traceability system would benefit their business"),
       tags$li(
-        "their expected return on investment (ROI)",
+        "the expected return on investment (ROI)",
         tags$sup(
           tags$a(
             icon("circle-info"),

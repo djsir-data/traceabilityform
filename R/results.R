@@ -777,10 +777,10 @@ uncertainty_card <- function(simulation_data){
       div(
         class = "card-body h-100",
         p(
-          "When uncertainty information in entered using the top right",
-          "toggle, this analysis will perform 5000 simualtions of possible",
-          "returns on investment, allowing businesses to guage likelyhood",
-          "of posititive returns.",
+          "When uncertainty information is entered using the top right",
+          "toggle, this analysis will perform 5000 simulations of possible",
+          "returns on investment, allowing businesses to gauge likelihood",
+          "of positive returns.",
           tags$sup(
             tags$a(
               icon("circle-info"),

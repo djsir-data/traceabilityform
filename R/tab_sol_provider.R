@@ -7,7 +7,7 @@ tab_sol_provider <- function(...) tabPanel(
   your business?"
   ),
   p(
-    "TThis section accounts for costs charged by the traceability service
+    "This section accounts for costs charged by the traceability service
     provider. All inputs are dollar values."
   ),
   br(),
