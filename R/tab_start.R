@@ -14,7 +14,7 @@ tab_start <- function(...) tabPanel(
       ),
     p(
       "Thank you for using the traceability cost-benefit analysis tool.",
-      "For a demonstartion of how this tool can help, click 'run example cost-benefit’.",
+      "For a demonstration of how this tool can help, click 'run example cost-benefit’.",
       div(
         class = "my-2",
         tags$button(
